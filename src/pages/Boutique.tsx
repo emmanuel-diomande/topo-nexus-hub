@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useShopStore, useAuthStore } from "@/stores/useStore";
-import { Search, Filter, ShoppingCart, Star, Package, Settings, LogOut } from "lucide-react";
+import { Search, Filter, ShoppingCart, Star, Package, Settings, LogOut, Plus } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { api } from "@/lib/api";
@@ -336,7 +336,7 @@ const Boutique = () => {
 
                   <div className="flex items-center justify-between pt-2 border-t">
                     <span className="text-2xl font-bold text-primary">
-                      {product.price.toLocaleString('fr-FR')} €
+                      {product.price.toLocaleString('fr-FR')} FCFA
                     </span>
                     
                     <Button 
@@ -348,8 +348,8 @@ const Boutique = () => {
                       size="sm"
                       className="w-full"
                     >
-                      <ShoppingCart className="w-4 h-4 mr-2" />
-                      {product.inStock ? "Ajouter au panier" : "Indisponible"}
+                      <Plus className="w-4 h-4 mr-2" />
+                      {product.inStock ? "Ajouter" : "Indisponible"}
                     </Button>
                   </div>
 
