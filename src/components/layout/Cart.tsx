@@ -43,7 +43,7 @@ const Cart = () => {
           />
           
           {/* Cart Panel */}
-          <div className="ml-auto relative bg-background w-full max-w-md h-full overflow-y-auto shadow-xl">
+          <div className="ml-auto relative bg-background w-full max-w-2xl h-full overflow-y-auto shadow-xl">
             <div className="p-6">
               {/* Header */}
               <div className="flex items-center justify-between mb-6">
@@ -69,7 +69,7 @@ const Cart = () => {
                     <Card key={item.id} className="border">
                       <CardContent className="p-4">
                         <div className="flex gap-4">
-                          <div className="w-16 h-16 flex-shrink-0">
+                          <div className="w-20 h-20 flex-shrink-0">
                             <LazyImage
                               src={item.image}
                               alt={item.name}
@@ -84,9 +84,9 @@ const Cart = () => {
                             <p className="text-sm text-muted-foreground truncate">
                               {item.description}
                             </p>
-                            <div className="flex items-center justify-between mt-2">
-                              <span className="font-semibold text-primary">
-                                Sur devis
+                            <div className="flex items-center justify-between mt-3">
+                              <span className="font-semibold text-primary text-lg">
+                                {item.price.toLocaleString('fr-FR')} €
                               </span>
                               <Button
                                 variant="ghost"
@@ -107,13 +107,13 @@ const Cart = () => {
                   <div className="pt-6 border-t space-y-4">
                     <div className="flex items-center justify-between">
                       <span className="text-lg font-semibold text-foreground">
-                        Total: Sur devis
+                        Total: {total.toLocaleString('fr-FR')} €
                       </span>
                     </div>
                     
                     <div className="space-y-2">
                       <Button className="w-full" size="lg">
-                        Demander un devis
+                        Commander ({total.toLocaleString('fr-FR')} €)
                       </Button>
                       <Button 
                         variant="outline" 

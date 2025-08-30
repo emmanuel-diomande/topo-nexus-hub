@@ -274,7 +274,7 @@ const Boutique = () => {
 
                   <div className="flex items-center justify-between pt-2 border-t">
                     <span className="text-2xl font-bold text-primary">
-                      Sur devis
+                      {product.price.toLocaleString('fr-FR')} €
                     </span>
                     
                     <Button 
