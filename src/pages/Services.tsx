@@ -9,6 +9,12 @@ import serviceTopographie from "@/assets/service-topographie.jpg";
 import serviceImmobilier from "@/assets/service-immobilier.jpg";
 import serviceAmenagement from "@/assets/service-amenagement.jpg";
 import serviceInformatique from "@/assets/service-informatique.jpg";
+import serviceTravauxPublics from "@/assets/service-travaux-publics.jpg";
+import serviceLotissement from "@/assets/service-lotissement.jpg";
+import serviceHydraulique from "@/assets/service-hydraulique.jpg";
+import serviceTransit from "@/assets/service-transit.jpg";
+import serviceImportExport from "@/assets/service-import-export.jpg";
+import serviceForage from "@/assets/service-forage.jpg";
 import LazyImage from "@/components/ui/lazy-image";
 import { 
   MapPin, 
@@ -74,7 +80,7 @@ const Services = () => {
       features: ["Études de faisabilité", "Maîtrise d'œuvre", "Suivi de chantier", "Réception d'ouvrages"],
       price: "Sur devis",
       category: "TP",
-      image: serviceTopographie
+      image: serviceTravauxPublics
     },
     {
       icon: Building,
@@ -83,7 +89,7 @@ const Services = () => {
       features: ["Conception de lotissements", "Études VRD", "Dossiers d'autorisation", "Suivi réalisation"],
       price: "Sur devis",
       category: "Urbanisme",
-      image: serviceAmenagement
+      image: serviceLotissement
     },
     {
       icon: Droplets,
@@ -92,7 +98,7 @@ const Services = () => {
       features: ["Études hydrauliques", "Dimensionnement réseaux", "Gestion eaux pluviales", "Assainissement"],
       price: "Sur devis",
       category: "Hydraulique",
-      image: serviceTopographie
+      image: serviceHydraulique
     },
     {
       icon: Ship,
@@ -101,7 +107,7 @@ const Services = () => {
       features: ["Transport international", "Logistique", "Douanes", "Suivi cargaisons"],
       price: "Sur devis",
       category: "Transport",
-      image: serviceTopographie
+      image: serviceTransit
     },
     {
       icon: Import,
@@ -110,7 +116,7 @@ const Services = () => {
       features: ["Commerce international", "Sourcing produits", "Formalités", "Accompagnement"],
       price: "Sur devis",
       category: "Commerce",
-      image: serviceTopographie
+      image: serviceImportExport
     },
     {
       icon: Drill,
@@ -119,7 +125,7 @@ const Services = () => {
       features: ["Forage d'eau", "Études géotechniques", "Installation pompes", "Maintenance"],
       price: "Sur devis",
       category: "Forage",
-      image: serviceTopographie
+      image: serviceForage
     }
   ];
 
