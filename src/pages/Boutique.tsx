@@ -13,7 +13,27 @@ import bannerBoutique from "@/assets/banner-boutique.jpg";
 
 // Simulation d'API pour les produits
 const fetchProducts = async () => {
-  // En attendant l'API réelle
+  const isProduction = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
+  
+  if (isProduction) {
+    try {
+      const response = await fetch('https://api.oeil-du-topo-consulting.com/products');
+      if (!response.ok) {
+        throw new Error('Erreur lors de la récupération des produits');
+      }
+      return await response.json();
+    } catch (error) {
+      console.error('Erreur API:', error);
+      // Fallback vers les données locales en cas d'erreur
+      return getLocalProducts();
+    }
+  } else {
+    // Environnement de développement - données locales
+    return getLocalProducts();
+  }
+};
+
+const getLocalProducts = () => {
   return [
     {
       id: "1",
