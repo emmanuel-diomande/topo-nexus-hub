@@ -3,13 +3,16 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useShopStore } from "@/stores/useStore";
-import { Search, Filter, ShoppingCart, Star, Package, Settings } from "lucide-react";
+import { useShopStore, useAuthStore } from "@/stores/useStore";
+import { Search, Filter, ShoppingCart, Star, Package, Settings, LogOut } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { api } from "@/lib/api";
 import { useToast } from "@/hooks/use-toast";
 import AdminPanel from "@/components/admin/AdminPanel";
+import { AuthDialog } from "@/components/admin/AuthDialog";
+import { ProductEditDialog } from "@/components/admin/ProductEditDialog";
+import { StockDialog } from "@/components/admin/StockDialog";
 import bannerBoutique from "@/assets/banner-boutique.jpg";
 
 // Simulation d'API pour les produits
@@ -101,11 +104,16 @@ const getLocalProducts = () => {
 
 const Boutique = () => {
   const { products, cart, setProducts, addToCart } = useShopStore();
+  const { isAuthenticated, logout } = useAuthStore();
   const { toast } = useToast();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [sortBy, setSortBy] = useState("name");
   const [isAdminMode, setIsAdminMode] = useState(false);
+  const [showAuthDialog, setShowAuthDialog] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<any>(null);
+  const [showEditDialog, setShowEditDialog] = useState(false);
+  const [showStockDialog, setShowStockDialog] = useState(false);
 
   const handleAddToCart = (product: any) => {
     addToCart(product);
@@ -183,14 +191,42 @@ const Boutique = () => {
         {/* Header */}
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-12">
           <div className="flex items-center space-x-4 mt-6 lg:mt-0">
-            <Button
-              variant="outline"
-              onClick={() => setIsAdminMode(!isAdminMode)}
-              className="flex items-center"
-            >
-              <Settings className="w-4 h-4 mr-2" />
-              {isAdminMode ? "Mode Client" : "Administration"}
-            </Button>
+            {!isAuthenticated ? (
+              <Button
+                variant="outline"
+                onClick={() => setShowAuthDialog(true)}
+                className="flex items-center"
+              >
+                <Settings className="w-4 h-4 mr-2" />
+                Administration
+              </Button>
+            ) : (
+              <div className="flex items-center space-x-2">
+                <Button
+                  variant="outline"
+                  onClick={() => setIsAdminMode(!isAdminMode)}
+                  className="flex items-center"
+                >
+                  <Settings className="w-4 h-4 mr-2" />
+                  {isAdminMode ? "Mode Client" : "Administration"}
+                </Button>
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    logout();
+                    setIsAdminMode(false);
+                    toast({
+                      title: "Déconnexion",
+                      description: "Vous avez été déconnecté de l'administration"
+                    });
+                  }}
+                  className="flex items-center"
+                >
+                  <LogOut className="w-4 h-4 mr-2" />
+                  Déconnexion
+                </Button>
+              </div>
+            )}
             <Button className="flex items-center">
               <ShoppingCart className="w-4 h-4 mr-2" />
               Panier ({cart.length})
@@ -199,7 +235,7 @@ const Boutique = () => {
         </div>
 
         {/* Admin Panel */}
-        {isAdminMode && <AdminPanel />}
+        {isAdminMode && isAuthenticated && <AdminPanel />}
 
         {/* Search and Filters */}
         <div className="bg-gradient-card p-6 rounded-lg mb-8">
@@ -303,37 +339,44 @@ const Boutique = () => {
                       {product.price.toLocaleString('fr-FR')} €
                     </span>
                     
-                    <div className="flex items-center justify-between gap-2">
-                      <Button 
-                        variant="outline"
-                        size="sm"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          window.location.href = `/produit/${product.id}`;
-                        }}
-                      >
-                        Voir détails
-                      </Button>
-                      <Button 
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleAddToCart(product);
-                        }}
-                        disabled={!product.inStock}
-                        size="sm"
-                      >
-                        <ShoppingCart className="w-4 h-4 mr-2" />
-                        {product.inStock ? "Ajouter" : "Indisponible"}
-                      </Button>
-                    </div>
+                    <Button 
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleAddToCart(product);
+                      }}
+                      disabled={!product.inStock}
+                      size="sm"
+                      className="w-full"
+                    >
+                      <ShoppingCart className="w-4 h-4 mr-2" />
+                      {product.inStock ? "Ajouter au panier" : "Indisponible"}
+                    </Button>
                   </div>
 
-                  {isAdminMode && (
+                  {isAdminMode && isAuthenticated && (
                     <div className="flex space-x-2 pt-2 border-t border-accent/20">
-                      <Button variant="outline" size="sm" className="flex-1">
+                      <Button 
+                        variant="outline" 
+                        size="sm" 
+                        className="flex-1"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelectedProduct(product);
+                          setShowEditDialog(true);
+                        }}
+                      >
                         Modifier
                       </Button>
-                      <Button variant="outline" size="sm" className="flex-1">
+                      <Button 
+                        variant="outline" 
+                        size="sm" 
+                        className="flex-1"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelectedProduct(product);
+                          setShowStockDialog(true);
+                        }}
+                      >
                         Stock
                       </Button>
                     </div>
@@ -372,6 +415,22 @@ const Boutique = () => {
           </div>
         </div>
       </div>
+      
+      {/* Dialogs */}
+      <AuthDialog 
+        open={showAuthDialog} 
+        onOpenChange={setShowAuthDialog} 
+      />
+      <ProductEditDialog 
+        product={selectedProduct}
+        open={showEditDialog} 
+        onOpenChange={setShowEditDialog} 
+      />
+      <StockDialog 
+        product={selectedProduct}
+        open={showStockDialog} 
+        onOpenChange={setShowStockDialog} 
+      />
     </div>
   );
 };

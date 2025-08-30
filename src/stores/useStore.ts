@@ -35,6 +35,12 @@ interface Product {
   updated_at?: string;
 }
 
+interface AuthStore {
+  isAuthenticated: boolean;
+  login: (password: string) => boolean;
+  logout: () => void;
+}
+
 interface ShopStore {
   products: Product[];
   cart: Product[];
@@ -112,4 +118,17 @@ export const useShopStore = create<ShopStore>((set, get) => ({
     set({ cart: currentCart.filter(item => item.id !== productId) });
   },
   clearCart: () => set({ cart: [] }),
+}));
+
+export const useAuthStore = create<AuthStore>((set) => ({
+  isAuthenticated: false,
+  login: (password: string) => {
+    // Simple password check - in production this should be more secure
+    if (password === 'admin123') {
+      set({ isAuthenticated: true });
+      return true;
+    }
+    return false;
+  },
+  logout: () => set({ isAuthenticated: false }),
 }));
