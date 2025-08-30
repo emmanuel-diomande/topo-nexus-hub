@@ -127,7 +127,14 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
   token: null,
   login: async (password: string) => {
     try {
-      const response = await fetch('https://api.oeil-du-topo-consulting.com/auth/login', {
+      // Configuration URL basée sur l'environnement
+      const AUTH_URL = import.meta.env.MODE === 'development' 
+        ? 'http://localhost:3000/api/auth/login'  // Auth locale en développement
+        : 'https://api.oeil-du-topo-consulting.com/auth/login';  // Auth de production
+      
+      console.log('🔐 Auth Mode:', import.meta.env.MODE, '| Auth URL:', AUTH_URL);
+      
+      const response = await fetch(AUTH_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ password }),
