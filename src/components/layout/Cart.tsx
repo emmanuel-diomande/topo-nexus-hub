@@ -40,7 +40,7 @@ const Cart = () => {
   const total = cart.reduce((sum, item) => sum + item.price, 0);
 
   const handleWhatsApp = () => {
-    const message = `Bonjour, je souhaite commander les articles suivants:\n\n${cart.map(item => `- ${item.name}: ${item.price.toLocaleString('fr-FR')} €`).join('\n')}\n\nTotal: ${total.toLocaleString('fr-FR')} €`;
+    const message = `Bonjour, je souhaite commander les articles suivants:\n\n${cart.map(item => `- ${item.name}: ${item.price.toLocaleString('fr-FR')} FCFA`).join('\n')}\n\nTotal: ${total.toLocaleString('fr-FR')} FCFA`;
     const whatsappUrl = `https://wa.me/33123456789?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, '_blank');
   };
@@ -137,7 +137,7 @@ const Cart = () => {
                             </p>
                             <div className="flex items-center justify-between mt-3">
                               <span className="font-semibold text-primary text-lg">
-                                {item.price.toLocaleString('fr-FR')} €
+                                {item.price.toLocaleString('fr-FR')} FCFA
                               </span>
                               <Button
                                 variant="ghost"
@@ -158,7 +158,7 @@ const Cart = () => {
                   <div className="pt-8 border-t space-y-6">
                     <div className="flex items-center justify-between">
                       <span className="text-lg font-semibold text-foreground">
-                        Total: {total.toLocaleString('fr-FR')} €
+                        Total: {total.toLocaleString('fr-FR')} FCFA
                       </span>
                     </div>
                     
@@ -169,7 +169,7 @@ const Cart = () => {
                           size="lg"
                           onClick={() => setIsOrderModalOpen(true)}
                         >
-                          Commander ({total.toLocaleString('fr-FR')} €)
+                          Commander ({total.toLocaleString('fr-FR')} FCFA)
                         </Button>
                         <Button 
                           variant="outline" 
