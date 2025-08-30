@@ -30,6 +30,7 @@ interface Product {
   category: string;
   inStock: boolean;
   rating?: number;
+  stock?: number;
 }
 
 interface ShopStore {

@@ -9,6 +9,8 @@ import APropos from "./pages/APropos";
 import Services from "./pages/Services";
 import Contact from "./pages/Contact";
 import Boutique from "./pages/Boutique";
+import StockManagement from "./components/admin/StockManagement";
+import OrderManagement from "./components/admin/OrderManagement";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -26,6 +28,8 @@ const App = () => (
           <Route path="/services" element={<Services />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/boutique" element={<Boutique />} />
+          <Route path="/stocks" element={<StockManagement />} />
+          <Route path="/commandes" element={<OrderManagement />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

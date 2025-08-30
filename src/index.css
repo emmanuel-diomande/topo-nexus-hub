@@ -15,21 +15,21 @@
     --popover: 0 0% 100%;
     --popover-foreground: 215 25% 27%;
 
-    /* Couleurs principales - Marron terreux du logo */
-    --primary: 32 45% 40%;
+    /* Couleurs principales - Vert principal du logo #2D6631 */
+    --primary: 120 36% 29%;
     --primary-foreground: 0 0% 100%;
-    --primary-hover: 32 45% 35%;
-    --primary-light: 32 45% 95%;
+    --primary-hover: 120 36% 25%;
+    --primary-light: 120 36% 95%;
 
-    /* Couleurs secondaires - Vert géomètre du logo */
-    --secondary: 120 60% 40%;
+    /* Couleurs secondaires - Vert clair pour les accents */
+    --secondary: 120 36% 35%;
     --secondary-foreground: 0 0% 100%;
-    --secondary-light: 120 60% 95%;
+    --secondary-light: 120 36% 90%;
 
-    /* Couleurs d'accent - Orange/jaune du logo */
-    --accent: 40 80% 55%;
-    --accent-foreground: 0 0% 100%;
-    --accent-light: 40 80% 95%;
+    /* Couleurs d'accent - Jaune/or du logo #E0AB4A */
+    --accent: 42 65% 58%;
+    --accent-foreground: 0 0% 20%;
+    --accent-light: 42 65% 95%;
 
     --muted: 210 40% 98%;
     --muted-foreground: 215.4 16.3% 46.9%;
@@ -42,16 +42,16 @@
     --ring: 210 100% 50%;
 
     /* Gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(32 45% 40%), hsl(32 45% 35%));
-    --gradient-secondary: linear-gradient(135deg, hsl(120 60% 40%), hsl(120 60% 35%));
-    --gradient-hero: linear-gradient(135deg, hsl(32 45% 40%), hsl(120 60% 40%));
+    --gradient-primary: linear-gradient(135deg, hsl(120 36% 29%), hsl(120 36% 25%));
+    --gradient-secondary: linear-gradient(135deg, hsl(120 36% 35%), hsl(120 36% 30%));
+    --gradient-hero: linear-gradient(135deg, hsl(120 36% 29%), hsl(42 65% 58%));
     --gradient-card: linear-gradient(145deg, hsl(0 0% 100%), hsl(210 40% 98%));
 
     /* Shadows */
-    --shadow-sm: 0 1px 2px 0 hsl(32 45% 40% / 0.05);
-    --shadow-md: 0 4px 6px -1px hsl(32 45% 40% / 0.1), 0 2px 4px -1px hsl(32 45% 40% / 0.06);
-    --shadow-lg: 0 10px 15px -3px hsl(32 45% 40% / 0.1), 0 4px 6px -2px hsl(32 45% 40% / 0.05);
-    --shadow-glow: 0 0 30px hsl(32 45% 40% / 0.3);
+    --shadow-sm: 0 1px 2px 0 hsl(120 36% 29% / 0.05);
+    --shadow-md: 0 4px 6px -1px hsl(120 36% 29% / 0.1), 0 2px 4px -1px hsl(120 36% 29% / 0.06);
+    --shadow-lg: 0 10px 15px -3px hsl(120 36% 29% / 0.1), 0 4px 6px -2px hsl(120 36% 29% / 0.05);
+    --shadow-glow: 0 0 30px hsl(120 36% 29% / 0.3);
 
     --radius: 0.5rem;
 
@@ -82,18 +82,18 @@
     --popover: 215 28% 17%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 32 45% 40%;
+    --primary: 120 36% 29%;
     --primary-foreground: 0 0% 100%;
-    --primary-hover: 32 45% 45%;
-    --primary-light: 32 45% 15%;
+    --primary-hover: 120 36% 35%;
+    --primary-light: 120 36% 15%;
 
-    --secondary: 120 60% 40%;
+    --secondary: 120 36% 35%;
     --secondary-foreground: 0 0% 100%;
-    --secondary-light: 120 60% 15%;
+    --secondary-light: 120 36% 15%;
 
-    --accent: 40 80% 55%;
-    --accent-foreground: 0 0% 100%;
-    --accent-light: 40 80% 15%;
+    --accent: 42 65% 58%;
+    --accent-foreground: 0 0% 20%;
+    --accent-light: 42 65% 15%;
 
     --muted: 215 28% 25%;
     --muted-foreground: 215 20.2% 65.1%;
@@ -106,12 +106,12 @@
     --ring: 210 100% 50%;
 
     /* Dark mode gradients */
-    --gradient-primary: linear-gradient(135deg, hsl(32 45% 40%), hsl(32 45% 45%));
-    --gradient-secondary: linear-gradient(135deg, hsl(120 60% 40%), hsl(120 60% 45%));
-    --gradient-hero: linear-gradient(135deg, hsl(32 45% 40%), hsl(120 60% 40%));
+    --gradient-primary: linear-gradient(135deg, hsl(120 36% 29%), hsl(120 36% 35%));
+    --gradient-secondary: linear-gradient(135deg, hsl(120 36% 35%), hsl(120 36% 40%));
+    --gradient-hero: linear-gradient(135deg, hsl(120 36% 29%), hsl(42 65% 58%));
     --gradient-card: linear-gradient(145deg, hsl(215 28% 17%), hsl(215 28% 25%));
 
-    --shadow-glow: 0 0 30px hsl(32 45% 40% / 0.4);
+    --shadow-glow: 0 0 30px hsl(120 36% 29% / 0.4);
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;

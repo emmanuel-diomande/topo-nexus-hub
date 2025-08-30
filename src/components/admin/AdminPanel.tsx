@@ -117,10 +117,7 @@ const AdminPanel = () => {
           <Button 
             variant="outline" 
             className="justify-start"
-            onClick={() => toast({
-              title: "Gestion des stocks",
-              description: "Module de gestion des stocks disponible bientôt.",
-            })}
+            onClick={() => window.open('/stocks', '_blank')}
           >
             <Package className="w-4 h-4 mr-2" />
             Gérer les stocks
@@ -128,10 +125,7 @@ const AdminPanel = () => {
           <Button 
             variant="outline" 
             className="justify-start"
-            onClick={() => toast({
-              title: "Commandes",
-              description: "Consultation des commandes disponible bientôt.",
-            })}
+            onClick={() => window.open('/commandes', '_blank')}
           >
             <ShoppingCart className="w-4 h-4 mr-2" />
             Voir les commandes
