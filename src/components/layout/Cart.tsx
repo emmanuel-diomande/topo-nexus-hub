@@ -1,16 +1,48 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useShopStore } from "@/stores/useStore";
-import { ShoppingCart, X, Plus, Minus, Trash2 } from "lucide-react";
+import { ShoppingCart, X, Plus, Minus, Trash2, MessageCircle } from "lucide-react";
 import { useState } from "react";
 import LazyImage from "@/components/ui/lazy-image";
+import { useToast } from "@/hooks/use-toast";
 
 const Cart = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isOrderModalOpen, setIsOrderModalOpen] = useState(false);
+  const [orderForm, setOrderForm] = useState({ fullName: '', phone: '', address: '' });
   const { cart, removeFromCart, clearCart } = useShopStore();
+  const { toast } = useToast();
   
   const total = cart.reduce((sum, item) => sum + item.price, 0);
+
+  const handleWhatsApp = () => {
+    const message = `Bonjour, je souhaite commander les articles suivants:\n\n${cart.map(item => `- ${item.name}: ${item.price.toLocaleString('fr-FR')} €`).join('\n')}\n\nTotal: ${total.toLocaleString('fr-FR')} €`;
+    const whatsappUrl = `https://wa.me/33123456789?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, '_blank');
+  };
+
+  const handleOrderSubmit = () => {
+    if (!orderForm.fullName || !orderForm.phone || !orderForm.address) {
+      toast({
+        title: "Erreur",
+        description: "Veuillez remplir tous les champs",
+        variant: "destructive"
+      });
+      return;
+    }
+    
+    toast({
+      title: "Commande envoyée",
+      description: "Nous vous contacterons bientôt"
+    });
+    setIsOrderModalOpen(false);
+    setOrderForm({ fullName: '', phone: '', address: '' });
+    clearCart();
+  };
 
   return (
     <>
