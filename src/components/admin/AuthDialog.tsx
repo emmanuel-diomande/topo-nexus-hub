@@ -13,24 +13,23 @@ interface AuthDialogProps {
 }
 
 export const AuthDialog = ({ open, onOpenChange }: AuthDialogProps) => {
-  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const { login } = useAuthStore();
   const { toast } = useToast();
 
   const handleLogin = async () => {
-    if (!email || !password) {
+    if (!password) {
       toast({
         title: "❌ Erreur",
-        description: "Veuillez remplir tous les champs",
+        description: "Veuillez entrer le mot de passe",
         variant: "destructive"
       });
       return;
     }
 
     setIsLoading(true);
-    const success = await login(email, password);
+    const success = await login(password);
     setIsLoading(false);
     
     if (success) {
@@ -39,12 +38,11 @@ export const AuthDialog = ({ open, onOpenChange }: AuthDialogProps) => {
         description: "Accès administration accordé",
       });
       onOpenChange(false);
-      setEmail("");
       setPassword("");
     } else {
       toast({
         title: "❌ Erreur de connexion", 
-        description: "Email ou mot de passe incorrect",
+        description: "Mot de passe incorrect",
         variant: "destructive"
       });
     }
@@ -62,18 +60,7 @@ export const AuthDialog = ({ open, onOpenChange }: AuthDialogProps) => {
         
         <div className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
-            <Input
-              id="email"
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="admin@exemple.com"
-            />
-          </div>
-          
-          <div className="space-y-2">
-            <Label htmlFor="password">Mot de passe</Label>
+            <Label htmlFor="password">Mot de passe administrateur</Label>
             <Input
               id="password"
               type="password"

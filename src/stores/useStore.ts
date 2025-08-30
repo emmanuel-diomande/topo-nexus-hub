@@ -38,7 +38,7 @@ interface Product {
 interface AuthStore {
   isAuthenticated: boolean;
   token: string | null;
-  login: (email: string, password: string) => Promise<boolean>;
+  login: (password: string) => Promise<boolean>;
   logout: () => void;
   initializeAuth: () => void;
 }
@@ -125,12 +125,12 @@ export const useShopStore = create<ShopStore>((set, get) => ({
 export const useAuthStore = create<AuthStore>((set, get) => ({
   isAuthenticated: false,
   token: null,
-  login: async (email: string, password: string) => {
+  login: async (password: string) => {
     try {
       const response = await fetch('https://api.oeil-du-topo-consulting.com/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ password }),
       });
       
       if (response.ok) {
