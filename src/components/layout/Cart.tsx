@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { useShopStore } from "@/stores/useStore";
 import { ShoppingCart, X, Plus, Minus, Trash2, MessageCircle } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import LazyImage from "@/components/ui/lazy-image";
 import { useToast } from "@/hooks/use-toast";
 
@@ -16,6 +16,26 @@ const Cart = () => {
   const [orderForm, setOrderForm] = useState({ fullName: '', phone: '', address: '' });
   const { cart, removeFromCart, clearCart } = useShopStore();
   const { toast } = useToast();
+  
+  // Charger les données depuis localStorage au montage du composant
+  useEffect(() => {
+    const savedOrderInfo = localStorage.getItem('orderInfo');
+    if (savedOrderInfo) {
+      try {
+        const parsedInfo = JSON.parse(savedOrderInfo);
+        setOrderForm(parsedInfo);
+      } catch (error) {
+        console.error('Erreur lors du chargement des informations de commande:', error);
+      }
+    }
+  }, []);
+  
+  // Sauvegarder les données dans localStorage à chaque modification
+  const updateOrderForm = (updates: Partial<typeof orderForm>) => {
+    const newOrderForm = { ...orderForm, ...updates };
+    setOrderForm(newOrderForm);
+    localStorage.setItem('orderInfo', JSON.stringify(newOrderForm));
+  };
   
   const total = cart.reduce((sum, item) => sum + item.price, 0);
 
@@ -40,7 +60,6 @@ const Cart = () => {
       description: "Nous vous contacterons bientôt"
     });
     setIsOrderModalOpen(false);
-    setOrderForm({ fullName: '', phone: '', address: '' });
     clearCart();
   };
 
@@ -189,7 +208,7 @@ const Cart = () => {
               <Input
                 id="fullName"
                 value={orderForm.fullName}
-                onChange={(e) => setOrderForm({ ...orderForm, fullName: e.target.value })}
+                onChange={(e) => updateOrderForm({ fullName: e.target.value })}
                 placeholder="Votre nom complet"
               />
             </div>
@@ -198,7 +217,7 @@ const Cart = () => {
               <Input
                 id="phone"
                 value={orderForm.phone}
-                onChange={(e) => setOrderForm({ ...orderForm, phone: e.target.value })}
+                onChange={(e) => updateOrderForm({ phone: e.target.value })}
                 placeholder="Votre numéro WhatsApp"
               />
             </div>
@@ -207,7 +226,7 @@ const Cart = () => {
               <Input
                 id="address"
                 value={orderForm.address}
-                onChange={(e) => setOrderForm({ ...orderForm, address: e.target.value })}
+                onChange={(e) => updateOrderForm({ address: e.target.value })}
                 placeholder="Votre adresse de livraison"
               />
             </div>
