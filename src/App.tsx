@@ -3,7 +3,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import Index from "./pages/Index";
+import Layout from "./components/layout/Layout";
 import Accueil from "./pages/Accueil";
 import APropos from "./pages/APropos";
 import Services from "./pages/Services";
@@ -26,17 +26,17 @@ const App = () => (
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Navigate to="/accueil" replace />} />
-          <Route path="/accueil" element={<Accueil />} />
-          <Route path="/a-propos" element={<APropos />} />
-          <Route path="/services" element={<Services />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/boutique" element={<Boutique />} />
+          <Route path="/accueil" element={<Layout><Accueil /></Layout>} />
+          <Route path="/a-propos" element={<Layout><APropos /></Layout>} />
+          <Route path="/services" element={<Layout><Services /></Layout>} />
+          <Route path="/contact" element={<Layout><Contact /></Layout>} />
+          <Route path="/boutique" element={<Layout><Boutique /></Layout>} />
           <Route path="/admin" element={<AdminPanel />} />
           <Route path="/admin/stocks" element={<StockManagement />} />
           <Route path="/admin/commandes" element={<OrderManagement />} />
           <Route path="/admin/statistiques" element={<Statistics />} />
           <Route path="/admin/produit/:id" element={<ProductDetails />} />
-          <Route path="*" element={<NotFound />} />
+          <Route path="*" element={<Layout><NotFound /></Layout>} />
         </Routes>
       </BrowserRouter>
     </TooltipProvider>
