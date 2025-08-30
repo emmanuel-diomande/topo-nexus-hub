@@ -7,6 +7,7 @@ import { useShopStore } from "@/stores/useStore";
 import { Search, Filter, ShoppingCart, Star, Package, Settings } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
+import AdminPanel from "@/components/admin/AdminPanel";
 
 // Simulation d'API pour les produits
 const fetchProducts = async () => {
@@ -155,29 +156,7 @@ const Boutique = () => {
         </div>
 
         {/* Admin Panel */}
-        {isAdminMode && (
-          <Card className="mb-8 border-accent">
-            <CardHeader>
-              <CardTitle className="text-accent">Panneau d'Administration</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <Button variant="outline" className="justify-start">
-                  Ajouter un produit
-                </Button>
-                <Button variant="outline" className="justify-start">
-                  Gérer les stocks
-                </Button>
-                <Button variant="outline" className="justify-start">
-                  Voir les commandes
-                </Button>
-                <Button variant="outline" className="justify-start">
-                  Statistiques
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-        )}
+        {isAdminMode && <AdminPanel />}
 
         {/* Search and Filters */}
         <div className="bg-gradient-card p-6 rounded-lg mb-8">

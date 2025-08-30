@@ -36,6 +36,7 @@ interface ShopStore {
   products: Product[];
   cart: Product[];
   setProducts: (products: Product[]) => void;
+  addProduct: (product: Product) => void;
   addToCart: (product: Product) => void;
   removeFromCart: (productId: string) => void;
   clearCart: () => void;
@@ -71,15 +72,27 @@ export const useSiteStore = create<SiteStore>((set) => ({
   setSiteData: (data) => set({ siteData: data }),
 }));
 
-export const useShopStore = create<ShopStore>((set) => ({
+export const useShopStore = create<ShopStore>((set, get) => ({
   products: [],
   cart: [],
   setProducts: (products) => set({ products }),
-  addToCart: (product) => set((state) => ({ 
-    cart: [...state.cart, product] 
-  })),
-  removeFromCart: (productId) => set((state) => ({ 
-    cart: state.cart.filter(item => item.id !== productId) 
-  })),
+  addProduct: (product) => {
+    const currentProducts = get().products;
+    set({ products: [...currentProducts, product] });
+  },
+  addToCart: (product) => {
+    const currentCart = get().cart;
+    const existingItem = currentCart.find(item => item.id === product.id);
+    
+    if (existingItem) {
+      return;
+    }
+    
+    set({ cart: [...currentCart, product] });
+  },
+  removeFromCart: (productId) => {
+    const currentCart = get().cart;
+    set({ cart: currentCart.filter(item => item.id !== productId) });
+  },
   clearCart: () => set({ cart: [] }),
 }));

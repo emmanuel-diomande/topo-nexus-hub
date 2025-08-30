@@ -1,8 +1,12 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useSiteStore, useNavigationStore } from "@/stores/useStore";
 import { ArrowRight, MapPin, Users, Award, CheckCircle } from "lucide-react";
 import heroImage from "@/assets/hero-topographie.jpg";
+import serviceTopographie from "@/assets/service-topographie.jpg";
+import serviceImmobilier from "@/assets/service-immobilier.jpg";
+import serviceAmenagement from "@/assets/service-amenagement.jpg";
+import serviceInformatique from "@/assets/service-informatique.jpg";
 
 const Accueil = () => {
   const { siteData } = useSiteStore();
@@ -132,23 +136,68 @@ const Accueil = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-              Nos Services
+              Nos Services Principaux
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Une gamme complète de services pour répondre à tous vos besoins techniques
+              Une expertise complète pour tous vos projets d'aménagement et de développement
             </p>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-            {siteData.services.map((service, index) => (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+            {[
+              { 
+                title: "Topographie", 
+                desc: "Relevés précis et cartographie professionnelle avec équipements de pointe",
+                image: serviceTopographie
+              },
+              { 
+                title: "Immobilier", 
+                desc: "Conseil et expertise foncière pour tous vos projets immobiliers",
+                image: serviceImmobilier
+              },
+              { 
+                title: "Aménagement Foncier", 
+                desc: "Planification et développement urbain durable",
+                image: serviceAmenagement
+              },
+              { 
+                title: "Informatique", 
+                desc: "Solutions digitales intégrées et modernisation",
+                image: serviceInformatique
+              }
+            ].map((service, index) => (
+              <Card key={index} className="border-0 shadow-md hover:shadow-lg transition-all duration-300 group overflow-hidden cursor-pointer"
+                    onClick={() => setCurrentPage('services')}>
+                <div className="aspect-square overflow-hidden">
+                  <img 
+                    src={service.image} 
+                    alt={service.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                </div>
+                <CardHeader className="text-center">
+                  <CardTitle className="text-lg text-foreground group-hover:text-primary transition-colors">
+                    {service.title}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="text-center">
+                  <p className="text-muted-foreground text-sm leading-relaxed">
+                    {service.desc}
+                  </p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-12">
+            {siteData.services.slice(4).map((service, index) => (
               <div 
                 key={index}
-                className="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow cursor-pointer group"
+                className="bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow cursor-pointer group"
                 onClick={() => setCurrentPage('services')}
               >
-                <div className="flex items-center space-x-2">
-                  <CheckCircle className="w-5 h-5 text-secondary group-hover:text-primary transition-colors" />
-                  <span className="text-sm font-medium text-foreground group-hover:text-primary transition-colors">
+                <div className="flex items-center justify-center">
+                  <span className="text-sm font-medium text-foreground group-hover:text-primary transition-colors text-center">
                     {service}
                   </span>
                 </div>
@@ -156,7 +205,7 @@ const Accueil = () => {
             ))}
           </div>
 
-          <div className="text-center mt-12">
+          <div className="text-center">
             <Button 
               size="lg"
               onClick={() => setCurrentPage('services')}
