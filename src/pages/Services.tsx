@@ -8,6 +8,7 @@ import serviceTopographie from "@/assets/service-topographie.jpg";
 import serviceImmobilier from "@/assets/service-immobilier.jpg";
 import serviceAmenagement from "@/assets/service-amenagement.jpg";
 import serviceInformatique from "@/assets/service-informatique.jpg";
+import LazyImage from "@/components/ui/lazy-image";
 import { 
   MapPin, 
   Home, 
@@ -164,10 +165,10 @@ const Services = () => {
           {serviceDetails.map((service, index) => (
             <Card key={index} className="border-0 shadow-md hover:shadow-lg transition-all duration-300 group overflow-hidden">
               <div className="aspect-video overflow-hidden">
-                <img 
+                <LazyImage
                   src={service.image} 
                   alt={service.title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  className="w-full h-full group-hover:scale-105 transition-transform duration-300"
                 />
               </div>
               <CardHeader className="pb-4">

@@ -1,9 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { useSiteStore } from "@/stores/useStore";
-import { Menu, X, ShoppingCart } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import logoImage from "@/assets/logo.png";
+import Cart from "@/components/layout/Cart";
 
 const Navigation = () => {
   const location = useLocation();
@@ -56,10 +57,7 @@ const Navigation = () => {
                 {item.label}
               </Link>
             ))}
-            <Button variant="default" size="sm" className="ml-4">
-              <ShoppingCart className="w-4 h-4 mr-2" />
-              Panier
-            </Button>
+            <Cart />
           </div>
 
           {/* Mobile menu button */}
@@ -92,10 +90,7 @@ const Navigation = () => {
               </Link>
             ))}
             <div className="px-4 pt-2">
-              <Button variant="default" size="sm" className="w-full">
-                <ShoppingCart className="w-4 h-4 mr-2" />
-                Panier
-              </Button>
+              <Cart />
             </div>
           </div>
         )}

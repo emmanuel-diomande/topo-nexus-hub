@@ -135,13 +135,6 @@
   /* Amélioration du chargement des images */
   img {
     @apply transition-opacity duration-300;
-    opacity: 0;
-  }
-
-  img.loaded,
-  img[src*="data:"],
-  img[src^="blob:"] {
-    opacity: 1;
   }
 
   /* Style pour les images en cours de chargement */
