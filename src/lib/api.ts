@@ -1,4 +1,9 @@
-const API_BASE_URL = 'https://api.oeil-du-topo-consulting.com';
+// Configuration API basée sur l'environnement
+const API_BASE_URL = import.meta.env.MODE === 'development' 
+  ? 'http://localhost:3000/api'  // API locale en développement
+  : 'https://api.oeil-du-topo-consulting.com';  // API de production
+
+console.log('🚀 Mode:', import.meta.env.MODE, '| API URL:', API_BASE_URL);
 
 // Get auth token from localStorage
 const getAuthHeaders = () => {
