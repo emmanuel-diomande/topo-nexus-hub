@@ -1,11 +1,12 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { useNavigationStore, useSiteStore } from "@/stores/useStore";
+import { useSiteStore } from "@/stores/useStore";
+import { useNavigate } from "react-router-dom";
 import { Target, Eye, Users, Award, ArrowRight } from "lucide-react";
 import bannerApropos from "@/assets/banner-apropos.jpg";
 
 const APropos = () => {
-  const { setCurrentPage } = useNavigationStore();
+  const navigate = useNavigate();
   const { siteData } = useSiteStore();
 
   const values = [
@@ -97,7 +98,7 @@ const APropos = () => {
                 Nous croyons que la précision technique et l'accompagnement humain sont les clés du succès 
                 de vos projets, qu'ils soient d'envergure locale ou internationale.
               </p>
-              <Button onClick={() => setCurrentPage('contact')}>
+              <Button onClick={() => navigate('/contact')}>
                 Nous contacter
                 <ArrowRight className="ml-2 w-4 h-4" />
               </Button>
@@ -196,7 +197,7 @@ const APropos = () => {
             <Button 
               size="lg" 
               className="bg-white text-primary hover:bg-white/90"
-              onClick={() => setCurrentPage('services')}
+              onClick={() => navigate('/services')}
             >
               Découvrir nos services
             </Button>
@@ -204,7 +205,7 @@ const APropos = () => {
               size="lg" 
               variant="outline" 
               className="border-white text-white hover:bg-white hover:text-primary"
-              onClick={() => setCurrentPage('contact')}
+              onClick={() => navigate('/contact')}
             >
               Demander un devis
             </Button>

@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { useSiteStore, useNavigationStore } from "@/stores/useStore";
+import { useSiteStore } from "@/stores/useStore";
+import { useNavigate } from "react-router-dom";
 import { ArrowRight, MapPin, Users, Award, CheckCircle } from "lucide-react";
 import heroImage from "@/assets/hero-topographie.jpg";
 import serviceTopographie from "@/assets/service-topographie.jpg";
@@ -10,7 +11,7 @@ import serviceInformatique from "@/assets/service-informatique.jpg";
 
 const Accueil = () => {
   const { siteData } = useSiteStore();
-  const { setCurrentPage } = useNavigationStore();
+  const navigate = useNavigate();
 
   const features = [
     {
@@ -63,7 +64,7 @@ const Accueil = () => {
             <Button 
               size="lg" 
               className="bg-white text-primary hover:bg-white/90 shadow-lg"
-              onClick={() => setCurrentPage('services')}
+              onClick={() => navigate('/services')}
             >
               Découvrir nos services
               <ArrowRight className="ml-2 w-5 h-5" />
@@ -72,7 +73,7 @@ const Accueil = () => {
               size="lg" 
               variant="outline" 
               className="border-white text-white hover:bg-white hover:text-primary"
-              onClick={() => setCurrentPage('contact')}
+              onClick={() => navigate('/contact')}
             >
               Demander un devis
             </Button>
@@ -167,7 +168,7 @@ const Accueil = () => {
               }
             ].map((service, index) => (
               <Card key={index} className="border-0 shadow-md hover:shadow-lg transition-all duration-300 group overflow-hidden cursor-pointer"
-                    onClick={() => setCurrentPage('services')}>
+                    onClick={() => navigate('/services')}>
                 <div className="aspect-square overflow-hidden">
                   <img 
                     src={service.image} 
@@ -194,7 +195,7 @@ const Accueil = () => {
               <div 
                 key={index}
                 className="bg-white p-4 rounded-lg shadow-sm hover:shadow-md transition-shadow cursor-pointer group"
-                onClick={() => setCurrentPage('services')}
+                onClick={() => navigate('/services')}
               >
                 <div className="flex items-center justify-center">
                   <span className="text-sm font-medium text-foreground group-hover:text-primary transition-colors text-center">
@@ -208,7 +209,7 @@ const Accueil = () => {
           <div className="text-center">
             <Button 
               size="lg"
-              onClick={() => setCurrentPage('services')}
+              onClick={() => navigate('/services')}
             >
               Voir tous nos services
               <ArrowRight className="ml-2 w-5 h-5" />
@@ -230,7 +231,7 @@ const Accueil = () => {
             <Button 
               size="lg" 
               className="bg-white text-primary hover:bg-white/90"
-              onClick={() => setCurrentPage('contact')}
+              onClick={() => navigate('/contact')}
             >
               Demander un devis gratuit
             </Button>
@@ -238,7 +239,7 @@ const Accueil = () => {
               size="lg" 
               variant="outline" 
               className="border-white text-white hover:bg-white hover:text-primary"
-              onClick={() => setCurrentPage('boutique')}
+              onClick={() => navigate('/boutique')}
             >
               Visiter la boutique
             </Button>

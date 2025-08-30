@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useNavigationStore, useSiteStore } from "@/stores/useStore";
+import { useNavigate } from "react-router-dom";
 import bannerServices from "@/assets/banner-services.jpg";
 import serviceTopographie from "@/assets/service-topographie.jpg";
 import serviceImmobilier from "@/assets/service-immobilier.jpg";
@@ -23,7 +24,7 @@ import {
 } from "lucide-react";
 
 const Services = () => {
-  const { setCurrentPage } = useNavigationStore();
+  const navigate = useNavigate();
   const { siteData } = useSiteStore();
 
   const serviceDetails = [
@@ -197,7 +198,7 @@ const Services = () => {
                   <span className="text-lg font-semibold text-primary">{service.price}</span>
                   <Button 
                     size="sm"
-                    onClick={() => setCurrentPage('contact')}
+                    onClick={() => navigate('/contact')}
                   >
                     Devis gratuit
                   </Button>
@@ -270,7 +271,7 @@ const Services = () => {
             <Button 
               size="lg" 
               className="bg-white text-primary hover:bg-white/90"
-              onClick={() => setCurrentPage('contact')}
+              onClick={() => navigate('/contact')}
             >
               Demander un devis
               <ArrowRight className="ml-2 w-4 h-4" />
@@ -279,7 +280,7 @@ const Services = () => {
               size="lg" 
               variant="outline" 
               className="border-white text-white hover:bg-white hover:text-primary"
-              onClick={() => setCurrentPage('apropos')}
+              onClick={() => navigate('/a-propos')}
             >
               En savoir plus
             </Button>
