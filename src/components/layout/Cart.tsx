@@ -144,9 +144,23 @@ const Cart = () => {
                     </div>
                     
                     <div className="space-y-3">
-                      <Button className="w-full" size="lg">
-                        Commander ({total.toLocaleString('fr-FR')} €)
-                      </Button>
+                      <div className="flex gap-3">
+                        <Button 
+                          className="flex-1" 
+                          size="lg"
+                          onClick={() => setIsOrderModalOpen(true)}
+                        >
+                          Commander ({total.toLocaleString('fr-FR')} €)
+                        </Button>
+                        <Button 
+                          variant="outline" 
+                          size="lg"
+                          onClick={handleWhatsApp}
+                          className="px-4"
+                        >
+                          <MessageCircle className="w-4 h-4" />
+                        </Button>
+                      </div>
                       <Button 
                         variant="outline" 
                         className="w-full"
@@ -162,6 +176,59 @@ const Cart = () => {
           </div>
         </div>
       )}
+
+      {/* Order Modal */}
+      <Dialog open={isOrderModalOpen} onOpenChange={setIsOrderModalOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Finaliser la commande</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4 py-4">
+            <div className="space-y-2">
+              <Label htmlFor="fullName">Nom complet</Label>
+              <Input
+                id="fullName"
+                value={orderForm.fullName}
+                onChange={(e) => setOrderForm({ ...orderForm, fullName: e.target.value })}
+                placeholder="Votre nom complet"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="phone">Numéro de téléphone (WhatsApp)</Label>
+              <Input
+                id="phone"
+                value={orderForm.phone}
+                onChange={(e) => setOrderForm({ ...orderForm, phone: e.target.value })}
+                placeholder="Votre numéro WhatsApp"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="address">Adresse</Label>
+              <Input
+                id="address"
+                value={orderForm.address}
+                onChange={(e) => setOrderForm({ ...orderForm, address: e.target.value })}
+                placeholder="Votre adresse de livraison"
+              />
+            </div>
+          </div>
+          <div className="flex gap-3">
+            <Button 
+              variant="outline" 
+              className="flex-1"
+              onClick={() => setIsOrderModalOpen(false)}
+            >
+              Annuler
+            </Button>
+            <Button 
+              className="flex-1"
+              onClick={handleOrderSubmit}
+            >
+              Confirmer la commande
+            </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
     </>
   );
 };
