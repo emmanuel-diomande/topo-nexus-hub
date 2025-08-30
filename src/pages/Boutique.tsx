@@ -7,6 +7,7 @@ import { useShopStore } from "@/stores/useStore";
 import { Search, Filter, ShoppingCart, Star, Package, Settings } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { api } from "@/lib/api";
 import { useToast } from "@/hooks/use-toast";
 import AdminPanel from "@/components/admin/AdminPanel";
 import bannerBoutique from "@/assets/banner-boutique.jpg";
@@ -250,7 +251,7 @@ const Boutique = () => {
               <CardContent className="p-0">
                 <div className="aspect-square bg-muted rounded-t-lg overflow-hidden">
                   <img 
-                    src={product.image} 
+                    src={Array.isArray(product.image) ? product.image[0] : product.image} 
                     alt={product.name}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                   />

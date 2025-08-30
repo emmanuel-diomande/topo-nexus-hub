@@ -129,7 +129,7 @@ const StockManagement = () => {
                   <div key={product.id} className="flex items-center justify-between p-4 border rounded-lg hover:bg-muted/50 transition-colors">
                     <div className="flex items-center space-x-4">
                       <img 
-                        src={product.image} 
+                        src={Array.isArray(product.image) ? product.image[0] : product.image} 
                         alt={product.name}
                         className="w-12 h-12 object-cover rounded"
                       />

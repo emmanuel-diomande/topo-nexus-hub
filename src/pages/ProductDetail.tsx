@@ -120,7 +120,7 @@ const ProductDetail = () => {
           <div className="space-y-4">
             <div className="aspect-square bg-muted rounded-lg overflow-hidden">
               <LazyImage
-                src={product.image}
+                src={Array.isArray(product.image) ? product.image[0] : product.image}
                 alt={product.name}
                 className="w-full h-full"
               />
@@ -316,7 +316,7 @@ const ProductDetail = () => {
                       onClick={() => navigate(`/produit/${relatedProduct.id}`)}>
                   <div className="aspect-square bg-muted rounded-t-lg overflow-hidden">
                     <LazyImage
-                      src={relatedProduct.image}
+                      src={Array.isArray(relatedProduct.image) ? relatedProduct.image[0] : relatedProduct.image}
                       alt={relatedProduct.name}
                       className="w-full h-full hover:scale-105 transition-transform duration-300"
                     />

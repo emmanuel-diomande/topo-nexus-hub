@@ -26,11 +26,13 @@ interface Product {
   name: string;
   price: number;
   description: string;
-  image: string;
+  image: string | string[];
   category: string;
   inStock: boolean;
   rating?: number;
   stock?: number;
+  created_at?: string;
+  updated_at?: string;
 }
 
 interface ShopStore {
@@ -38,6 +40,8 @@ interface ShopStore {
   cart: Product[];
   setProducts: (products: Product[]) => void;
   addProduct: (product: Product) => void;
+  updateProduct: (id: string, updates: Partial<Product>) => void;
+  deleteProduct: (id: string) => void;
   addToCart: (product: Product) => void;
   removeFromCart: (productId: string) => void;
   clearCart: () => void;
@@ -80,6 +84,18 @@ export const useShopStore = create<ShopStore>((set, get) => ({
   addProduct: (product) => {
     const currentProducts = get().products;
     set({ products: [...currentProducts, product] });
+  },
+  updateProduct: (id, updates) => {
+    const currentProducts = get().products;
+    set({ 
+      products: currentProducts.map(product => 
+        product.id === id ? { ...product, ...updates } : product
+      )
+    });
+  },
+  deleteProduct: (id) => {
+    const currentProducts = get().products;
+    set({ products: currentProducts.filter(product => product.id !== id) });
   },
   addToCart: (product) => {
     const currentCart = get().cart;

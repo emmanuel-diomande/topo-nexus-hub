@@ -275,7 +275,7 @@ const ProductDetails = () => {
               <CardContent className="p-6">
                 <div className="aspect-square bg-muted rounded-lg overflow-hidden mb-4">
                   <img 
-                    src={product.image} 
+                    src={Array.isArray(product.image) ? product.image[0] : product.image} 
                     alt={product.name}
                     className="w-full h-full object-cover"
                   />

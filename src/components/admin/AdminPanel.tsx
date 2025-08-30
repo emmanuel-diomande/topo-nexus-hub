@@ -5,42 +5,79 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Plus, Package, ShoppingCart, BarChart3, Settings, ArrowRight, ArrowLeft } from "lucide-react";
+import { Plus, Package, ShoppingCart, BarChart3, Settings, ArrowRight, ArrowLeft, Upload } from "lucide-react";
 import { useState } from "react";
 import { useShopStore } from "@/stores/useStore";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
+import { api } from "@/lib/api";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const AdminPanel = () => {
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const [isAddProductOpen, setIsAddProductOpen] = useState(false);
+  const [selectedImages, setSelectedImages] = useState<File[]>([]);
   const [newProduct, setNewProduct] = useState({
     name: "",
     price: 0,
     description: "",
     category: "",
-    image: "/placeholder.svg"
+    stock: 0
   });
   
   const { addProduct } = useShopStore();
   const { toast } = useToast();
 
-  const handleAddProduct = () => {
-    if (newProduct.name && newProduct.price && newProduct.category) {
-      addProduct({
-        id: Date.now().toString(),
-        ...newProduct,
-        inStock: true,
-        rating: 0
+  const createProductMutation = useMutation({
+    mutationFn: async (productData: any) => {
+      let imageUrls: string[] = [];
+      
+      if (selectedImages.length > 0) {
+        imageUrls = await api.uploadMultipleImages(selectedImages);
+      }
+      
+      return api.createProduct({
+        ...productData,
+        image: imageUrls,
+        inStock: productData.stock > 0
+      });
+    },
+    onSuccess: (data) => {
+      addProduct(data);
+      queryClient.invalidateQueries({ queryKey: ['products'] });
+      toast({
+        title: "Produit ajouté",
+        description: "Le produit a été ajouté avec succès.",
       });
       setNewProduct({
         name: "",
         price: 0,
         description: "",
         category: "",
-        image: "/placeholder.svg"
+        stock: 0
       });
+      setSelectedImages([]);
       setIsAddProductOpen(false);
+    },
+    onError: (error) => {
+      toast({
+        title: "Erreur",
+        description: "Une erreur est survenue lors de l'ajout du produit.",
+        variant: "destructive"
+      });
+    }
+  });
+
+  const handleAddProduct = () => {
+    if (newProduct.name && newProduct.price && newProduct.category) {
+      createProductMutation.mutate(newProduct);
+    }
+  };
+
+  const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files) {
+      setSelectedImages(Array.from(e.target.files));
     }
   };
 
@@ -188,8 +225,41 @@ const AdminPanel = () => {
                         placeholder="Description du produit"
                       />
                     </div>
-                    <Button onClick={handleAddProduct} className="w-full">
-                      Ajouter le produit
+                    <div className="grid gap-2">
+                      <Label htmlFor="stock">Stock initial</Label>
+                      <Input
+                        id="stock"
+                        type="number"
+                        value={newProduct.stock}
+                        onChange={(e) => setNewProduct({...newProduct, stock: parseInt(e.target.value) || 0})}
+                        placeholder="Quantité en stock"
+                      />
+                    </div>
+                    <div className="grid gap-2">
+                      <Label htmlFor="images">Images (multiples)</Label>
+                      <div className="flex items-center gap-2">
+                        <Input
+                          id="images"
+                          type="file"
+                          multiple
+                          accept="image/*"
+                          onChange={handleImageSelect}
+                          className="flex-1"
+                        />
+                        <Upload className="w-4 h-4" />
+                      </div>
+                      {selectedImages.length > 0 && (
+                        <p className="text-sm text-muted-foreground">
+                          {selectedImages.length} image(s) sélectionnée(s)
+                        </p>
+                      )}
+                    </div>
+                    <Button 
+                      onClick={handleAddProduct} 
+                      className="w-full"
+                      disabled={createProductMutation.isPending}
+                    >
+                      {createProductMutation.isPending ? "Ajout en cours..." : "Ajouter le produit"}
                     </Button>
                   </div>
                 </DialogContent>

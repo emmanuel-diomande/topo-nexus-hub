@@ -71,7 +71,7 @@ const Cart = () => {
                         <div className="flex gap-6">
                           <div className="w-24 h-24 flex-shrink-0">
                             <LazyImage
-                              src={item.image}
+                              src={Array.isArray(item.image) ? item.image[0] : item.image}
                               alt={item.name}
                               className="w-full h-full rounded-md"
                             />
