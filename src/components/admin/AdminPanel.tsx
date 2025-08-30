@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Plus, Package, ShoppingCart, BarChart3, Settings, ArrowRight } from "lucide-react";
+import { Plus, Package, ShoppingCart, BarChart3, Settings, ArrowRight, ArrowLeft } from "lucide-react";
 import { useState } from "react";
 import { useShopStore } from "@/stores/useStore";
 import { useToast } from "@/hooks/use-toast";
@@ -58,6 +58,16 @@ const AdminPanel = () => {
       </div>
 
       <div className="container mx-auto px-4 py-12">
+        <div className="mb-8">
+          <Button 
+            variant="outline" 
+            onClick={() => navigate('/accueil')}
+            className="flex items-center gap-2"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            Retour à l'accueil
+          </Button>
+        </div>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <Card className="border-primary/20">
             <CardHeader>
