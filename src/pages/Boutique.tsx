@@ -346,10 +346,9 @@ const Boutique = () => {
                       }}
                       disabled={!product.inStock}
                       size="sm"
-                      className="w-full"
                     >
-                      <Plus className="w-4 h-4 mr-2" />
-                      {product.inStock ? "Ajouter" : "Indisponible"}
+                      <ShoppingCart className="w-4 h-4 mr-2" />
+                      {product.inStock ? "Panier" : "Indisponible"}
                     </Button>
                   </div>
 
