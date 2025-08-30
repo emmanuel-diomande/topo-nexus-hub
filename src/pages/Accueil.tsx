@@ -1,0 +1,203 @@
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { useSiteStore, useNavigationStore } from "@/stores/useStore";
+import { ArrowRight, MapPin, Users, Award, CheckCircle } from "lucide-react";
+import heroImage from "@/assets/hero-topographie.jpg";
+
+const Accueil = () => {
+  const { siteData } = useSiteStore();
+  const { setCurrentPage } = useNavigationStore();
+
+  const features = [
+    {
+      icon: MapPin,
+      title: "Précision Millimétrique",
+      description: "Mesures topographiques de haute précision avec des équipements de dernière génération"
+    },
+    {
+      icon: Users,
+      title: "Équipe Experte", 
+      description: "Géomètres-experts diplômés avec plus de 10 ans d'expérience terrain"
+    },
+    {
+      icon: Award,
+      title: "Certifications",
+      description: "Agréments officiels et certifications qualité pour tous nos services"
+    }
+  ];
+
+  const stats = [
+    { number: "500+", label: "Projets réalisés" },
+    { number: "15+", label: "Années d'expérience" },
+    { number: "98%", label: "Clients satisfaits" },
+    { number: "24h", label: "Délai de réponse" }
+  ];
+
+  return (
+    <div className="min-h-screen">
+      {/* Hero Section */}
+      <section className="relative h-screen flex items-center justify-center overflow-hidden">
+        <div 
+          className="absolute inset-0 bg-cover bg-center"
+          style={{ backgroundImage: `url(${heroImage})` }}
+        >
+          <div className="absolute inset-0 bg-gradient-to-r from-primary/90 to-secondary/90"></div>
+        </div>
+        
+        <div className="relative z-10 text-center max-w-4xl mx-auto px-4">
+          <h1 className="text-5xl md:text-7xl font-bold text-white mb-6">
+            {siteData.companyName}
+          </h1>
+          <p className="text-xl md:text-2xl text-white/90 mb-8">
+            {siteData.slogan}
+          </p>
+          <p className="text-lg text-white/80 mb-12 max-w-2xl mx-auto">
+            Services professionnels de topographie, immobilier, aménagement foncier et plus encore. 
+            Votre partenaire de confiance pour tous vos projets techniques.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button 
+              size="lg" 
+              className="bg-white text-primary hover:bg-white/90 shadow-lg"
+              onClick={() => setCurrentPage('services')}
+            >
+              Découvrir nos services
+              <ArrowRight className="ml-2 w-5 h-5" />
+            </Button>
+            <Button 
+              size="lg" 
+              variant="outline" 
+              className="border-white text-white hover:bg-white hover:text-primary"
+              onClick={() => setCurrentPage('contact')}
+            >
+              Demander un devis
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* Stats Section */}
+      <section className="py-16 bg-gradient-card">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            {stats.map((stat, index) => (
+              <div key={index} className="text-center">
+                <div className="text-3xl md:text-4xl font-bold text-primary mb-2">
+                  {stat.number}
+                </div>
+                <div className="text-muted-foreground">
+                  {stat.label}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Features Section */}
+      <section className="py-20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+              Pourquoi nous choisir ?
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              Notre expertise et notre engagement qualité font de nous le partenaire idéal 
+              pour vos projets de topographie et services techniques.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {features.map((feature, index) => (
+              <Card key={index} className="border-0 shadow-md hover:shadow-lg transition-shadow">
+                <CardContent className="p-8 text-center">
+                  <div className="w-16 h-16 bg-primary-light rounded-full flex items-center justify-center mx-auto mb-6">
+                    <feature.icon className="w-8 h-8 text-primary" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-foreground mb-4">
+                    {feature.title}
+                  </h3>
+                  <p className="text-muted-foreground">
+                    {feature.description}
+                  </p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Services Overview */}
+      <section className="py-20 bg-gradient-card">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+              Nos Services
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              Une gamme complète de services pour répondre à tous vos besoins techniques
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+            {siteData.services.map((service, index) => (
+              <div 
+                key={index}
+                className="bg-white p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow cursor-pointer group"
+                onClick={() => setCurrentPage('services')}
+              >
+                <div className="flex items-center space-x-2">
+                  <CheckCircle className="w-5 h-5 text-secondary group-hover:text-primary transition-colors" />
+                  <span className="text-sm font-medium text-foreground group-hover:text-primary transition-colors">
+                    {service}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="text-center mt-12">
+            <Button 
+              size="lg"
+              onClick={() => setCurrentPage('services')}
+            >
+              Voir tous nos services
+              <ArrowRight className="ml-2 w-5 h-5" />
+            </Button>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-20 bg-gradient-hero">
+        <div className="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
+            Prêt à démarrer votre projet ?
+          </h2>
+          <p className="text-xl text-white/90 mb-8">
+            Contactez-nous dès aujourd'hui pour discuter de vos besoins et obtenir un devis personnalisé.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Button 
+              size="lg" 
+              className="bg-white text-primary hover:bg-white/90"
+              onClick={() => setCurrentPage('contact')}
+            >
+              Demander un devis gratuit
+            </Button>
+            <Button 
+              size="lg" 
+              variant="outline" 
+              className="border-white text-white hover:bg-white hover:text-primary"
+              onClick={() => setCurrentPage('boutique')}
+            >
+              Visiter la boutique
+            </Button>
+          </div>
+        </div>
+      </section>
+    </div>
+  );
+};
+
+export default Accueil;
