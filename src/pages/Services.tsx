@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -27,6 +28,7 @@ import {
 const Services = () => {
   const navigate = useNavigate();
   const { siteData } = useSiteStore();
+  const [activeCategory, setActiveCategory] = useState("Tous");
 
   const serviceDetails = [
     {
@@ -123,6 +125,10 @@ const Services = () => {
 
   const categories = ["Tous", "Géomètre", "Immobilier", "Foncier", "Tech", "TP", "Urbanisme", "Hydraulique", "Transport", "Commerce", "Forage"];
 
+  const filteredServices = activeCategory === "Tous" 
+    ? serviceDetails 
+    : serviceDetails.filter(service => service.category === activeCategory);
+
   return (
     <div className="min-h-screen">
       {/* Banner */}
@@ -152,8 +158,9 @@ const Services = () => {
           {categories.map((category) => (
             <Badge 
               key={category} 
-              variant="outline" 
+              variant={activeCategory === category ? "default" : "outline"}
               className="cursor-pointer hover:bg-primary hover:text-primary-foreground transition-colors"
+              onClick={() => setActiveCategory(category)}
             >
               {category}
             </Badge>
@@ -162,7 +169,7 @@ const Services = () => {
 
         {/* Services Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
-          {serviceDetails.map((service, index) => (
+          {filteredServices.map((service, index) => (
             <Card key={index} className="border-0 shadow-md hover:shadow-lg transition-all duration-300 group overflow-hidden">
               <div className="aspect-video overflow-hidden">
                 <LazyImage
