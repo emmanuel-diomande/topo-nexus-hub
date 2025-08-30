@@ -5,12 +5,14 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Plus, Package, ShoppingCart, BarChart3, Settings } from "lucide-react";
+import { Plus, Package, ShoppingCart, BarChart3, Settings, ArrowRight } from "lucide-react";
 import { useState } from "react";
 import { useShopStore } from "@/stores/useStore";
 import { useToast } from "@/hooks/use-toast";
+import { useNavigate } from "react-router-dom";
 
 const AdminPanel = () => {
+  const navigate = useNavigate();
   const [isAddProductOpen, setIsAddProductOpen] = useState(false);
   const [newProduct, setNewProduct] = useState({
     name: "",
@@ -43,107 +45,150 @@ const AdminPanel = () => {
   };
 
   return (
-    <Card className="mb-8 border-accent">
-      <CardHeader>
-        <CardTitle className="text-accent flex items-center">
-          <Settings className="w-5 h-5 mr-2" />
-          Panneau d'Administration
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <Dialog open={isAddProductOpen} onOpenChange={setIsAddProductOpen}>
-            <DialogTrigger asChild>
-              <Button variant="outline" className="justify-start">
-                <Plus className="w-4 h-4 mr-2" />
-                Ajouter un produit
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[425px]">
-              <DialogHeader>
-                <DialogTitle>Ajouter un nouveau produit</DialogTitle>
-              </DialogHeader>
-              <div className="grid gap-4 py-4">
-                <div className="grid gap-2">
-                  <Label htmlFor="name">Nom du produit</Label>
-                  <Input
-                    id="name"
-                    value={newProduct.name}
-                    onChange={(e) => setNewProduct({...newProduct, name: e.target.value})}
-                    placeholder="Nom du produit"
-                  />
-                </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="price">Prix (€)</Label>
-                  <Input
-                    id="price"
-                    type="number"
-                    value={newProduct.price}
-                    onChange={(e) => setNewProduct({...newProduct, price: Number(e.target.value)})}
-                    placeholder="Prix"
-                  />
-                </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="category">Catégorie</Label>
-                  <Select value={newProduct.category} onValueChange={(value) => setNewProduct({...newProduct, category: value})}>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Sélectionner une catégorie" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="Instruments">Instruments</SelectItem>
-                      <SelectItem value="GPS">GPS</SelectItem>
-                      <SelectItem value="Logiciels">Logiciels</SelectItem>
-                      <SelectItem value="Scanning">Scanning</SelectItem>
-                      <SelectItem value="Drones">Drones</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-                <div className="grid gap-2">
-                  <Label htmlFor="description">Description</Label>
-                  <Textarea
-                    id="description"
-                    value={newProduct.description}
-                    onChange={(e) => setNewProduct({...newProduct, description: e.target.value})}
-                    placeholder="Description du produit"
-                  />
-                </div>
-                <Button onClick={handleAddProduct} className="w-full">
-                  Ajouter le produit
-                </Button>
-              </div>
-            </DialogContent>
-          </Dialog>
-
-          <Button 
-            variant="outline" 
-            className="justify-start"
-            onClick={() => window.open('/stocks', '_blank')}
-          >
-            <Package className="w-4 h-4 mr-2" />
-            Gérer les stocks
-          </Button>
-          <Button 
-            variant="outline" 
-            className="justify-start"
-            onClick={() => window.open('/commandes', '_blank')}
-          >
-            <ShoppingCart className="w-4 h-4 mr-2" />
-            Voir les commandes
-          </Button>
-          <Button 
-            variant="outline" 
-            className="justify-start"
-            onClick={() => toast({
-              title: "Statistiques",
-              description: "Dashboard statistiques disponible bientôt.",
-            })}
-          >
-            <BarChart3 className="w-4 h-4 mr-2" />
-            Statistiques
-          </Button>
+    <div className="min-h-screen bg-gradient-to-b from-background to-muted/20">
+      <div className="relative">
+        <div className="h-48 bg-gradient-hero"></div>
+        <div className="absolute inset-0 bg-black/40"></div>
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="text-center text-white">
+            <h1 className="text-5xl font-bold mb-4">Administration</h1>
+            <p className="text-xl opacity-90">Gérez votre boutique et vos services</p>
+          </div>
         </div>
-      </CardContent>
-    </Card>
+      </div>
+
+      <div className="container mx-auto px-4 py-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <Card className="border-primary/20">
+            <CardHeader>
+              <CardTitle className="text-primary">Gestion des Stocks</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <Button 
+                onClick={() => navigate('/admin/stocks')}
+                className="flex items-center justify-between w-full p-6 h-auto text-left"
+              >
+                <div className="flex items-center">
+                  <Package className="w-6 h-6 mr-3" />
+                  <div>
+                    <div className="font-semibold">Gérer les stocks</div>
+                    <div className="text-sm opacity-80">Inventaire et approvisionnement</div>
+                  </div>
+                </div>
+                <ArrowRight className="w-5 h-5" />
+              </Button>
+            </CardContent>
+          </Card>
+
+          <Card className="border-secondary/20">
+            <CardHeader>
+              <CardTitle className="text-secondary">Commandes</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <Button 
+                onClick={() => navigate('/admin/commandes')}
+                className="flex items-center justify-between w-full p-6 h-auto text-left"
+              >
+                <div className="flex items-center">
+                  <ShoppingCart className="w-6 h-6 mr-3" />
+                  <div>
+                    <div className="font-semibold">Voir les commandes</div>
+                    <div className="text-sm opacity-80">Suivi des ventes</div>
+                  </div>
+                </div>
+                <ArrowRight className="w-5 h-5" />
+              </Button>
+            </CardContent>
+          </Card>
+
+          <Card className="border-accent/20">
+            <CardHeader>
+              <CardTitle className="text-accent">Statistiques</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <Button 
+                onClick={() => navigate('/admin/statistiques')}
+                className="flex items-center justify-between w-full p-6 h-auto text-left"
+              >
+                <div className="flex items-center">
+                  <BarChart3 className="w-6 h-6 mr-3" />
+                  <div>
+                    <div className="font-semibold">Statistiques</div>
+                    <div className="text-sm opacity-80">Analyses et performances</div>
+                  </div>
+                </div>
+                <ArrowRight className="w-5 h-5" />
+              </Button>
+            </CardContent>
+          </Card>
+
+          <Card className="border-primary/20">
+            <CardHeader>
+              <CardTitle className="text-primary">Produits</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <Dialog open={isAddProductOpen} onOpenChange={setIsAddProductOpen}>
+                <DialogTrigger asChild>
+                  <Button className="flex items-center justify-between w-full p-6 h-auto text-left">
+                    <div className="flex items-center">
+                      <Plus className="w-6 h-6 mr-3" />
+                      <div>
+                        <div className="font-semibold">Ajouter un produit</div>
+                        <div className="text-sm opacity-80">Nouveau produit au catalogue</div>
+                      </div>
+                    </div>
+                    <ArrowRight className="w-5 h-5" />
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="sm:max-w-[425px]">
+                  <DialogHeader>
+                    <DialogTitle>Ajouter un nouveau produit</DialogTitle>
+                  </DialogHeader>
+                  <div className="grid gap-4 py-4">
+                    <div className="grid gap-2">
+                      <Label htmlFor="name">Nom du produit</Label>
+                      <Input
+                        id="name"
+                        value={newProduct.name}
+                        onChange={(e) => setNewProduct({...newProduct, name: e.target.value})}
+                        placeholder="Nom du produit"
+                      />
+                    </div>
+                    <div className="grid gap-2">
+                      <Label htmlFor="category">Catégorie</Label>
+                      <Select value={newProduct.category} onValueChange={(value) => setNewProduct({...newProduct, category: value})}>
+                        <SelectTrigger>
+                          <SelectValue placeholder="Sélectionner une catégorie" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="Instruments">Instruments</SelectItem>
+                          <SelectItem value="GPS">GPS</SelectItem>
+                          <SelectItem value="Logiciels">Logiciels</SelectItem>
+                          <SelectItem value="Scanning">Scanning</SelectItem>
+                          <SelectItem value="Drones">Drones</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="grid gap-2">
+                      <Label htmlFor="description">Description</Label>
+                      <Textarea
+                        id="description"
+                        value={newProduct.description}
+                        onChange={(e) => setNewProduct({...newProduct, description: e.target.value})}
+                        placeholder="Description du produit"
+                      />
+                    </div>
+                    <Button onClick={handleAddProduct} className="w-full">
+                      Ajouter le produit
+                    </Button>
+                  </div>
+                </DialogContent>
+              </Dialog>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
+    </div>
   );
 };
 

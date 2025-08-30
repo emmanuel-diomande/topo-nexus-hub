@@ -5,14 +5,16 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Edit, Trash2, Package, AlertTriangle, CheckCircle, Plus } from "lucide-react";
+import { Edit, Trash2, Package, AlertTriangle, CheckCircle, Plus, ArrowLeft } from "lucide-react";
 import { useState } from "react";
 import { useShopStore } from "@/stores/useStore";
 import { useToast } from "@/hooks/use-toast";
+import { useNavigate } from "react-router-dom";
 
 const StockManagement = () => {
   const { products, setProducts } = useShopStore();
   const { toast } = useToast();
+  const navigate = useNavigate();
   const [editingProduct, setEditingProduct] = useState(null);
   const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
 
@@ -59,6 +61,16 @@ const StockManagement = () => {
       </div>
 
       <div className="container mx-auto px-4 py-12">
+        <div className="mb-8">
+          <Button 
+            variant="outline" 
+            onClick={() => navigate('/admin')}
+            className="mb-6"
+          >
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Retour Administration
+          </Button>
+        </div>
         <div className="mb-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
             <Card className="border-primary/20">

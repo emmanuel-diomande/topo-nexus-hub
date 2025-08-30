@@ -2,9 +2,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ShoppingCart, Calendar, Euro, User, Package, Truck, CheckCircle, Clock, XCircle } from "lucide-react";
+import { ShoppingCart, Calendar, Euro, User, Package, Truck, CheckCircle, Clock, XCircle, ArrowLeft } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import { useNavigate } from "react-router-dom";
 
 interface Order {
   id: string;
@@ -23,6 +24,7 @@ interface Order {
 
 const OrderManagement = () => {
   const { toast } = useToast();
+  const navigate = useNavigate();
   
   // Données d'exemple pour les commandes
   const [orders, setOrders] = useState<Order[]>([
@@ -115,6 +117,16 @@ const OrderManagement = () => {
       </div>
 
       <div className="container mx-auto px-4 py-12">
+        <div className="mb-8">
+          <Button 
+            variant="outline" 
+            onClick={() => navigate('/admin')}
+            className="mb-6"
+          >
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Retour Administration
+          </Button>
+        </div>
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
           <Card className="border-secondary/20">
             <CardContent className="p-6">

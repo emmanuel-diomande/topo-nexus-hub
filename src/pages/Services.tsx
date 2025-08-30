@@ -3,6 +3,10 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useNavigationStore, useSiteStore } from "@/stores/useStore";
 import bannerServices from "@/assets/banner-services.jpg";
+import serviceTopographie from "@/assets/service-topographie.jpg";
+import serviceImmobilier from "@/assets/service-immobilier.jpg";
+import serviceAmenagement from "@/assets/service-amenagement.jpg";
+import serviceInformatique from "@/assets/service-informatique.jpg";
 import { 
   MapPin, 
   Home, 
@@ -28,16 +32,18 @@ const Services = () => {
       title: "Topographie",
       description: "Levés topographiques, implantations, calculs de surfaces et volumes",
       features: ["Levés de terrain", "Implantation de constructions", "Calculs topométriques", "Plans cotés"],
-      price: "À partir de 500€",
-      category: "Géomètre"
+      price: "Sur devis",
+      category: "Géomètre",
+      image: serviceTopographie
     },
     {
       icon: Home,
       title: "Immobilier",
       description: "Expertises immobilières, évaluations, conseils en investissement",
       features: ["Expertise immobilière", "Évaluation de biens", "Conseil en investissement", "Diagnostics"],
-      price: "À partir de 300€",
-      category: "Immobilier"
+      price: "Sur devis",
+      category: "Immobilier",
+      image: serviceImmobilier
     },
     {
       icon: TreePine,
@@ -45,15 +51,17 @@ const Services = () => {
       description: "Remembrement, division parcellaire, études d'aménagement",
       features: ["Remembrement rural", "Division parcellaire", "Études d'impact", "Dossiers réglementaires"],
       price: "Sur devis",
-      category: "Foncier"
+      category: "Foncier",
+      image: serviceAmenagement
     },
     {
       icon: Monitor,
       title: "Informatique",
       description: "Solutions logicielles métier, SIG, développement sur mesure",
       features: ["Logiciels SIG", "Applications métier", "Formation", "Support technique"],
-      price: "À partir de 1200€",
-      category: "Tech"
+      price: "Sur devis",
+      category: "Tech",
+      image: serviceInformatique
     },
     {
       icon: Truck,
@@ -61,7 +69,8 @@ const Services = () => {
       description: "Études techniques, maîtrise d'œuvre, suivi de chantiers",
       features: ["Études de faisabilité", "Maîtrise d'œuvre", "Suivi de chantier", "Réception d'ouvrages"],
       price: "Sur devis",
-      category: "TP"
+      category: "TP",
+      image: serviceTopographie
     },
     {
       icon: Building,
@@ -69,15 +78,17 @@ const Services = () => {
       description: "Conception de lotissements, études de viabilité, VRD",
       features: ["Conception de lotissements", "Études VRD", "Dossiers d'autorisation", "Suivi réalisation"],
       price: "Sur devis",
-      category: "Urbanisme"
+      category: "Urbanisme",
+      image: serviceAmenagement
     },
     {
       icon: Droplets,
       title: "Hydraulique",
       description: "Études hydrauliques, réseaux d'assainissement, gestion des eaux",
       features: ["Études hydrauliques", "Dimensionnement réseaux", "Gestion eaux pluviales", "Assainissement"],
-      price: "À partir de 800€",
-      category: "Hydraulique"
+      price: "Sur devis",
+      category: "Hydraulique",
+      image: serviceTopographie
     },
     {
       icon: Ship,
@@ -85,23 +96,26 @@ const Services = () => {
       description: "Transport international, logistique, déclarations douanières",
       features: ["Transport international", "Logistique", "Douanes", "Suivi cargaisons"],
       price: "Sur devis",
-      category: "Transport"
+      category: "Transport",
+      image: serviceTopographie
     },
     {
       icon: Import,
       title: "Import-Export",
       description: "Commerce international, sourcing, accompagnement administratif",
       features: ["Commerce international", "Sourcing produits", "Formalités", "Accompagnement"],
-      price: "Commission 3-5%",
-      category: "Commerce"
+      price: "Sur devis",
+      category: "Commerce",
+      image: serviceTopographie
     },
     {
       icon: Drill,
       title: "Forage",
       description: "Forages d'eau, géotechniques, installations de pompage",
       features: ["Forage d'eau", "Études géotechniques", "Installation pompes", "Maintenance"],
-      price: "À partir de 2000€",
-      category: "Forage"
+      price: "Sur devis",
+      category: "Forage",
+      image: serviceTopographie
     }
   ];
 
@@ -147,13 +161,22 @@ const Services = () => {
         {/* Services Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
           {serviceDetails.map((service, index) => (
-            <Card key={index} className="border-0 shadow-md hover:shadow-lg transition-all duration-300 group">
+            <Card key={index} className="border-0 shadow-md hover:shadow-lg transition-all duration-300 group overflow-hidden">
+              <div className="aspect-video overflow-hidden">
+                <img 
+                  src={service.image} 
+                  alt={service.title}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                />
+              </div>
               <CardHeader className="pb-4">
-                <div className="w-16 h-16 bg-primary-light rounded-lg flex items-center justify-center mb-4 group-hover:scale-110 transition-transform">
-                  <service.icon className="w-8 h-8 text-primary" />
+                <div className="flex items-center justify-between mb-2">
+                  <div className="w-12 h-12 bg-primary-light rounded-lg flex items-center justify-center">
+                    <service.icon className="w-6 h-6 text-primary" />
+                  </div>
+                  <Badge variant="secondary" className="w-fit">{service.category}</Badge>
                 </div>
                 <CardTitle className="text-xl text-foreground">{service.title}</CardTitle>
-                <Badge variant="secondary" className="w-fit">{service.category}</Badge>
               </CardHeader>
               <CardContent className="space-y-4">
                 <p className="text-muted-foreground">{service.description}</p>

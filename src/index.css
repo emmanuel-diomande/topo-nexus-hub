@@ -15,14 +15,14 @@
     --popover: 0 0% 100%;
     --popover-foreground: 215 25% 27%;
 
-    /* Couleurs principales - Vert principal du logo #2D6631 */
-    --primary: 120 36% 29%;
-    --primary-foreground: 0 0% 100%;
-    --primary-hover: 120 36% 25%;
-    --primary-light: 120 36% 95%;
+    /* Couleurs principales - Jaune/Doré #E0AB4A */
+    --primary: 42 75% 59%; /* #E0AB4A */
+    --primary-foreground: 0 0% 0%; /* Noir pour le contraste */
+    --primary-hover: 42 75% 55%;
+    --primary-light: 42 75% 95%;
 
-    /* Couleurs secondaires - Vert clair pour les accents */
-    --secondary: 120 36% 35%;
+    /* Couleurs secondaires - Vert #2D6631 */
+    --secondary: 120 36% 29%; /* #2D6631 */
     --secondary-foreground: 0 0% 100%;
     --secondary-light: 120 36% 90%;
 
