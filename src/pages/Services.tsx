@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useNavigationStore, useSiteStore } from "@/stores/useStore";
+import bannerServices from "@/assets/banner-services.jpg";
 import { 
   MapPin, 
   Home, 
@@ -107,18 +108,28 @@ const Services = () => {
   const categories = ["Tous", "Géomètre", "Immobilier", "Foncier", "Tech", "TP", "Urbanisme", "Hydraulique", "Transport", "Commerce", "Forage"];
 
   return (
-    <div className="min-h-screen py-16">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="text-center mb-16">
-          <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
+    <div className="min-h-screen">
+      {/* Banner */}
+      <section className="relative h-80 flex items-center justify-center overflow-hidden">
+        <div 
+          className="absolute inset-0 bg-cover bg-center"
+          style={{ backgroundImage: `url(${bannerServices})` }}
+        >
+          <div className="absolute inset-0 bg-gradient-to-r from-primary/80 to-secondary/80"></div>
+        </div>
+        
+        <div className="relative z-10 text-center max-w-4xl mx-auto px-4">
+          <h1 className="text-5xl md:text-6xl font-bold text-white mb-4">
             Nos Services
           </h1>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+          <p className="text-xl text-white/90 max-w-2xl mx-auto">
             Une gamme complète de services techniques pour accompagner tous vos projets, 
             de la conception à la réalisation.
           </p>
         </div>
+      </section>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
 
         {/* Categories Filter */}
         <div className="flex flex-wrap gap-2 mb-12 justify-center">

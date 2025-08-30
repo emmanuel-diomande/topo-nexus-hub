@@ -49,13 +49,13 @@ const Accueil = () => {
         </div>
         
         <div className="relative z-10 text-center max-w-4xl mx-auto px-4">
-          <h1 className="text-5xl md:text-7xl font-bold text-white mb-6">
+          <h1 className="text-6xl md:text-8xl font-bold text-white mb-6">
             {siteData.companyName}
           </h1>
-          <p className="text-xl md:text-2xl text-white/90 mb-8">
+          <p className="text-2xl md:text-3xl text-white/90 mb-8">
             {siteData.slogan}
           </p>
-          <p className="text-lg text-white/80 mb-12 max-w-2xl mx-auto">
+          <p className="text-xl text-white/80 mb-12 max-w-2xl mx-auto">
             Services professionnels de topographie, immobilier, aménagement foncier et plus encore. 
             Votre partenaire de confiance pour tous vos projets techniques.
           </p>

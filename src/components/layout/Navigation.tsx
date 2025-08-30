@@ -1,10 +1,12 @@
 import { Button } from "@/components/ui/button";
-import { useNavigationStore } from "@/stores/useStore";
+import { useNavigationStore, useSiteStore } from "@/stores/useStore";
 import { Menu, X, ShoppingCart } from "lucide-react";
 import { useState } from "react";
+import logoImage from "@/assets/logo.png";
 
 const Navigation = () => {
   const { currentPage, setCurrentPage } = useNavigationStore();
+  const { siteData } = useSiteStore();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const navigationItems = [
@@ -23,17 +25,19 @@ const Navigation = () => {
   return (
     <nav className="sticky top-0 z-50 bg-background/95 backdrop-blur-sm border-b">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
+        <div className="flex justify-between items-center h-20">
           {/* Logo */}
           <div 
             className="flex items-center cursor-pointer"
             onClick={() => handleNavigation('accueil')}
           >
-            <div className="w-8 h-8 bg-gradient-primary rounded-lg mr-3 flex items-center justify-center">
-              <span className="text-primary-foreground font-bold text-sm">TN</span>
-            </div>
-            <span className="text-xl font-bold bg-gradient-primary bg-clip-text text-transparent">
-              TopoNexus
+            <img 
+              src={logoImage} 
+              alt="L'œil du topo" 
+              className="w-12 h-12 rounded-full mr-3"
+            />
+            <span className="text-2xl font-bold bg-gradient-primary bg-clip-text text-transparent">
+              {siteData.companyName}
             </span>
           </div>
 
@@ -43,7 +47,7 @@ const Navigation = () => {
               <button
                 key={item.id}
                 onClick={() => handleNavigation(item.id)}
-                className={`text-sm font-medium transition-colors duration-200 ${
+                className={`text-base font-medium transition-colors duration-200 ${
                   currentPage === item.id
                     ? 'text-primary border-b-2 border-primary pb-1'
                     : 'text-muted-foreground hover:text-primary'

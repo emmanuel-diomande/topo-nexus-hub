@@ -1,10 +1,12 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { useNavigationStore } from "@/stores/useStore";
+import { useNavigationStore, useSiteStore } from "@/stores/useStore";
 import { Target, Eye, Users, Award, ArrowRight } from "lucide-react";
+import bannerApropos from "@/assets/banner-apropos.jpg";
 
 const APropos = () => {
   const { setCurrentPage } = useNavigationStore();
+  const { siteData } = useSiteStore();
 
   const values = [
     {
@@ -30,11 +32,11 @@ const APropos = () => {
   ];
 
   const timeline = [
-    {
-      year: "2010",
-      title: "Création de l'entreprise",
-      description: "Fondation de TopoNexus par une équipe de géomètres passionnés"
-    },
+            {
+              year: "2010",
+              title: "Création de l'entreprise",
+              description: `Fondation de ${siteData.companyName} par une équipe de géomètres passionnés`
+            },
     {
       year: "2015",
       title: "Expansion des services",
@@ -58,18 +60,28 @@ const APropos = () => {
   ];
 
   return (
-    <div className="min-h-screen py-16">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header Section */}
-        <div className="text-center mb-16">
-          <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
-            À Propos de TopoNexus
+    <div className="min-h-screen">
+      {/* Banner */}
+      <section className="relative h-80 flex items-center justify-center overflow-hidden">
+        <div 
+          className="absolute inset-0 bg-cover bg-center"
+          style={{ backgroundImage: `url(${bannerApropos})` }}
+        >
+          <div className="absolute inset-0 bg-gradient-to-r from-primary/80 to-secondary/80"></div>
+        </div>
+        
+        <div className="relative z-10 text-center max-w-4xl mx-auto px-4">
+          <h1 className="text-5xl md:text-6xl font-bold text-white mb-4">
+            À Propos de {siteData.companyName}
           </h1>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Depuis plus de 15 ans, TopoNexus accompagne ses clients dans la réalisation de leurs projets 
+          <p className="text-xl text-white/90 max-w-2xl mx-auto">
+            Depuis plus de 15 ans, {siteData.companyName} accompagne ses clients dans la réalisation de leurs projets 
             les plus complexes grâce à une expertise technique reconnue et un service client d'exception.
           </p>
         </div>
+      </section>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
 
         {/* Mission Section */}
         <section className="mb-20">
@@ -145,7 +157,7 @@ const APropos = () => {
         {/* Timeline Section */}
         <section className="mb-20">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-foreground mb-4">Notre Histoire</h2>
+            <h2 className="text-3xl font-bold text-foreground mb-4">Notre Évolution</h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
               Un parcours jalonné d'innovations et de succès partagés avec nos clients
             </p>

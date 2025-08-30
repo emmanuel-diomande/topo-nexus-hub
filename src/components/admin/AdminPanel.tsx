@@ -8,6 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Plus, Package, ShoppingCart, BarChart3, Settings } from "lucide-react";
 import { useState } from "react";
 import { useShopStore } from "@/stores/useStore";
+import { useToast } from "@/hooks/use-toast";
 
 const AdminPanel = () => {
   const [isAddProductOpen, setIsAddProductOpen] = useState(false);
@@ -20,6 +21,7 @@ const AdminPanel = () => {
   });
   
   const { addProduct } = useShopStore();
+  const { toast } = useToast();
 
   const handleAddProduct = () => {
     if (newProduct.name && newProduct.price && newProduct.category) {
@@ -112,15 +114,36 @@ const AdminPanel = () => {
             </DialogContent>
           </Dialog>
 
-          <Button variant="outline" className="justify-start">
+          <Button 
+            variant="outline" 
+            className="justify-start"
+            onClick={() => toast({
+              title: "Gestion des stocks",
+              description: "Module de gestion des stocks disponible bientôt.",
+            })}
+          >
             <Package className="w-4 h-4 mr-2" />
             Gérer les stocks
           </Button>
-          <Button variant="outline" className="justify-start">
+          <Button 
+            variant="outline" 
+            className="justify-start"
+            onClick={() => toast({
+              title: "Commandes",
+              description: "Consultation des commandes disponible bientôt.",
+            })}
+          >
             <ShoppingCart className="w-4 h-4 mr-2" />
             Voir les commandes
           </Button>
-          <Button variant="outline" className="justify-start">
+          <Button 
+            variant="outline" 
+            className="justify-start"
+            onClick={() => toast({
+              title: "Statistiques",
+              description: "Dashboard statistiques disponible bientôt.",
+            })}
+          >
             <BarChart3 className="w-4 h-4 mr-2" />
             Statistiques
           </Button>

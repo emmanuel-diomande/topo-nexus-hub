@@ -8,6 +8,7 @@ import { useSiteStore } from "@/stores/useStore";
 import { MapPin, Phone, Mail, Clock, Send, MessageSquare } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
+import bannerContact from "@/assets/banner-contact.jpg";
 
 const Contact = () => {
   const { siteData } = useSiteStore();
@@ -66,18 +67,28 @@ const Contact = () => {
   ];
 
   return (
-    <div className="min-h-screen py-16">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="text-center mb-16">
-          <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
+    <div className="min-h-screen">
+      {/* Banner */}
+      <section className="relative h-80 flex items-center justify-center overflow-hidden">
+        <div 
+          className="absolute inset-0 bg-cover bg-center"
+          style={{ backgroundImage: `url(${bannerContact})` }}
+        >
+          <div className="absolute inset-0 bg-gradient-to-r from-primary/80 to-secondary/80"></div>
+        </div>
+        
+        <div className="relative z-10 text-center max-w-4xl mx-auto px-4">
+          <h1 className="text-5xl md:text-6xl font-bold text-white mb-4">
             Contactez-nous
           </h1>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+          <p className="text-xl text-white/90 max-w-2xl mx-auto">
             Notre équipe d'experts est à votre disposition pour répondre à vos questions 
             et vous accompagner dans la réalisation de vos projets.
           </p>
         </div>
+      </section>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
           {/* Contact Form */}

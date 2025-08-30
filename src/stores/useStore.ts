@@ -49,8 +49,8 @@ export const useNavigationStore = create<NavigationStore>((set) => ({
 
 export const useSiteStore = create<SiteStore>((set) => ({
   siteData: {
-    companyName: 'TopoNexus',
-    slogan: 'Votre partenaire en topographie et services techniques',
+    companyName: "L'œil du topo",
+    slogan: 'La précision au service de vos projets',
     contact: {
       phone: '+33 1 23 45 67 89',
       email: 'contact@toponexus.fr',

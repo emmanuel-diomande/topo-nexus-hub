@@ -7,7 +7,9 @@ import { useShopStore } from "@/stores/useStore";
 import { Search, Filter, ShoppingCart, Star, Package, Settings } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { useToast } from "@/hooks/use-toast";
 import AdminPanel from "@/components/admin/AdminPanel";
+import bannerBoutique from "@/assets/banner-boutique.jpg";
 
 // Simulation d'API pour les produits
 const fetchProducts = async () => {
@@ -78,10 +80,20 @@ const fetchProducts = async () => {
 
 const Boutique = () => {
   const { products, cart, setProducts, addToCart } = useShopStore();
+  const { toast } = useToast();
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [sortBy, setSortBy] = useState("name");
   const [isAdminMode, setIsAdminMode] = useState(false);
+
+  const handleAddToCart = (product: any) => {
+    addToCart(product);
+    toast({
+      title: "✅ Produit ajouté !",
+      description: `${product.name} a été ajouté à votre panier avec succès.`,
+      duration: 3000,
+    });
+  };
 
   const { data: apiProducts, isLoading } = useQuery({
     queryKey: ['products'],
@@ -126,19 +138,29 @@ const Boutique = () => {
   }
 
   return (
-    <div className="min-h-screen py-16">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen">
+      {/* Banner */}
+      <section className="relative h-80 flex items-center justify-center overflow-hidden">
+        <div 
+          className="absolute inset-0 bg-cover bg-center"
+          style={{ backgroundImage: `url(${bannerBoutique})` }}
+        >
+          <div className="absolute inset-0 bg-gradient-to-r from-primary/80 to-secondary/80"></div>
+        </div>
+        
+        <div className="relative z-10 text-center max-w-4xl mx-auto px-4">
+          <h1 className="text-5xl md:text-6xl font-bold text-white mb-4">
+            Boutique Technique
+          </h1>
+          <p className="text-xl text-white/90 max-w-2xl mx-auto">
+            Équipements professionnels et logiciels spécialisés pour vos projets de topographie
+          </p>
+        </div>
+      </section>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         {/* Header */}
         <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center mb-12">
-          <div>
-            <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4">
-              Boutique Technique
-            </h1>
-            <p className="text-xl text-muted-foreground max-w-2xl">
-              Équipements professionnels et logiciels spécialisés pour vos projets de topographie
-            </p>
-          </div>
-          
           <div className="flex items-center space-x-4 mt-6 lg:mt-0">
             <Button
               variant="outline"
@@ -256,7 +278,7 @@ const Boutique = () => {
                     </span>
                     
                     <Button 
-                      onClick={() => addToCart(product)}
+                      onClick={() => handleAddToCart(product)}
                       disabled={!product.inStock}
                       className="ml-auto"
                     >
