@@ -9,6 +9,7 @@ import APropos from "./pages/APropos";
 import Services from "./pages/Services";
 import Contact from "./pages/Contact";
 import Boutique from "./pages/Boutique";
+import ProductDetail from "./pages/ProductDetail";
 import AdminPanel from "./components/admin/AdminPanel";
 import StockManagement from "./components/admin/StockManagement";
 import OrderManagement from "./components/admin/OrderManagement";
@@ -31,6 +32,7 @@ const App = () => (
           <Route path="/services" element={<Layout><Services /></Layout>} />
           <Route path="/contact" element={<Layout><Contact /></Layout>} />
           <Route path="/boutique" element={<Layout><Boutique /></Layout>} />
+          <Route path="/produit/:id" element={<Layout><ProductDetail /></Layout>} />
           <Route path="/admin" element={<AdminPanel />} />
           <Route path="/admin/stocks" element={<StockManagement />} />
           <Route path="/admin/commandes" element={<OrderManagement />} />

@@ -225,7 +225,8 @@ const Boutique = () => {
         {/* Products Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {filteredProducts.map((product) => (
-            <Card key={product.id} className="border-0 shadow-md hover:shadow-lg transition-all duration-300 group">
+            <Card key={product.id} className="border-0 shadow-md hover:shadow-lg transition-all duration-300 group cursor-pointer"
+                  onClick={() => window.location.href = `/produit/${product.id}`}>
               <CardContent className="p-0">
                 <div className="aspect-square bg-muted rounded-t-lg overflow-hidden">
                   <img 
@@ -244,7 +245,11 @@ const Boutique = () => {
                   </div>
                   
                   <div>
-                    <h3 className="font-semibold text-foreground text-lg mb-2 group-hover:text-primary transition-colors">
+                    <h3 className="font-semibold text-foreground text-lg mb-2 group-hover:text-primary transition-colors cursor-pointer"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          window.location.href = `/produit/${product.id}`;
+                        }}>
                       {product.name}
                     </h3>
                     <p className="text-muted-foreground text-sm line-clamp-2">
@@ -277,14 +282,29 @@ const Boutique = () => {
                       {product.price.toLocaleString('fr-FR')} €
                     </span>
                     
-                    <Button 
-                      onClick={() => handleAddToCart(product)}
-                      disabled={!product.inStock}
-                      className="ml-auto"
-                    >
-                      <ShoppingCart className="w-4 h-4 mr-2" />
-                      {product.inStock ? "Ajouter" : "Indisponible"}
-                    </Button>
+                    <div className="flex items-center justify-between gap-2">
+                      <Button 
+                        variant="outline"
+                        size="sm"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          window.location.href = `/produit/${product.id}`;
+                        }}
+                      >
+                        Voir détails
+                      </Button>
+                      <Button 
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleAddToCart(product);
+                        }}
+                        disabled={!product.inStock}
+                        size="sm"
+                      >
+                        <ShoppingCart className="w-4 h-4 mr-2" />
+                        {product.inStock ? "Ajouter" : "Indisponible"}
+                      </Button>
+                    </div>
                   </div>
 
                   {isAdminMode && (
