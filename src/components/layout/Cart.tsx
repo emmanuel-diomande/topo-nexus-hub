@@ -43,10 +43,10 @@ const Cart = () => {
           />
           
           {/* Cart Panel */}
-          <div className="ml-auto relative bg-background w-full max-w-2xl h-full overflow-y-auto shadow-xl">
-            <div className="p-6">
+          <div className="ml-auto relative bg-background w-full max-w-2xl min-h-screen overflow-y-auto shadow-xl">
+            <div className="p-8 min-h-screen">
               {/* Header */}
-              <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center justify-between mb-8">
                 <h2 className="text-2xl font-bold text-foreground">Panier</h2>
                 <Button 
                   variant="ghost" 
@@ -59,17 +59,17 @@ const Cart = () => {
 
               {/* Cart Items */}
               {cart.length === 0 ? (
-                <div className="text-center py-12">
+                <div className="text-center py-20">
                   <ShoppingCart className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
                   <p className="text-muted-foreground">Votre panier est vide</p>
                 </div>
               ) : (
-                <div className="space-y-4">
+                <div className="space-y-6">
                   {cart.map((item) => (
                     <Card key={item.id} className="border">
-                      <CardContent className="p-4">
-                        <div className="flex gap-4">
-                          <div className="w-20 h-20 flex-shrink-0">
+                      <CardContent className="p-6">
+                        <div className="flex gap-6">
+                          <div className="w-24 h-24 flex-shrink-0">
                             <LazyImage
                               src={item.image}
                               alt={item.name}
@@ -78,10 +78,10 @@ const Cart = () => {
                           </div>
                           
                           <div className="flex-1 min-w-0">
-                            <h3 className="font-medium text-foreground truncate">
+                            <h3 className="font-medium text-foreground truncate text-lg mb-2">
                               {item.name}
                             </h3>
-                            <p className="text-sm text-muted-foreground truncate">
+                            <p className="text-sm text-muted-foreground truncate mb-3">
                               {item.description}
                             </p>
                             <div className="flex items-center justify-between mt-3">
@@ -104,14 +104,14 @@ const Cart = () => {
                   ))}
 
                   {/* Actions */}
-                  <div className="pt-6 border-t space-y-4">
+                  <div className="pt-8 border-t space-y-6">
                     <div className="flex items-center justify-between">
                       <span className="text-lg font-semibold text-foreground">
                         Total: {total.toLocaleString('fr-FR')} €
                       </span>
                     </div>
                     
-                    <div className="space-y-2">
+                    <div className="space-y-3">
                       <Button className="w-full" size="lg">
                         Commander ({total.toLocaleString('fr-FR')} €)
                       </Button>
