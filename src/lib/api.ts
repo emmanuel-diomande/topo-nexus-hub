@@ -1,5 +1,11 @@
 const API_BASE_URL = 'https://api.oeil-du-topo-consulting.com';
 
+// Get auth token from localStorage
+const getAuthHeaders = () => {
+  const token = localStorage.getItem('auth_token');
+  return token ? { 'Authorization': `Bearer ${token}` } : {};
+};
+
 // API Types
 export interface Product {
   id: string;
@@ -70,7 +76,10 @@ export const api = {
   async createProduct(product: Omit<Product, 'id' | 'created_at' | 'updated_at'>): Promise<Product> {
     const response = await fetch(`${API_BASE_URL}/products`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 
+        'Content-Type': 'application/json',
+        ...getAuthHeaders()
+      },
       body: JSON.stringify(product),
     });
     if (!response.ok) throw new Error('Failed to create product');
@@ -80,7 +89,10 @@ export const api = {
   async updateProduct(id: string, product: Partial<Product>): Promise<Product> {
     const response = await fetch(`${API_BASE_URL}/products/${id}`, {
       method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 
+        'Content-Type': 'application/json',
+        ...getAuthHeaders()
+      },
       body: JSON.stringify(product),
     });
     if (!response.ok) throw new Error('Failed to update product');
@@ -90,6 +102,7 @@ export const api = {
   async deleteProduct(id: string): Promise<void> {
     const response = await fetch(`${API_BASE_URL}/products/${id}`, {
       method: 'DELETE',
+      headers: getAuthHeaders(),
     });
     if (!response.ok) throw new Error('Failed to delete product');
   },
@@ -97,7 +110,10 @@ export const api = {
   async updateStock(stockUpdate: StockUpdate): Promise<Product> {
     const response = await fetch(`${API_BASE_URL}/products/${stockUpdate.product_id}/stock`, {
       method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 
+        'Content-Type': 'application/json',
+        ...getAuthHeaders()
+      },
       body: JSON.stringify({ quantity: stockUpdate.quantity }),
     });
     if (!response.ok) throw new Error('Failed to update stock');
@@ -127,7 +143,10 @@ export const api = {
   async updateOrderStatus(id: string, status: Order['status']): Promise<Order> {
     const response = await fetch(`${API_BASE_URL}/orders/${id}/status`, {
       method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 
+        'Content-Type': 'application/json',
+        ...getAuthHeaders()
+      },
       body: JSON.stringify({ status }),
     });
     if (!response.ok) throw new Error('Failed to update order status');
@@ -137,7 +156,10 @@ export const api = {
   async createOrder(order: Omit<Order, 'id' | 'created_at' | 'updated_at'>): Promise<Order> {
     const response = await fetch(`${API_BASE_URL}/orders`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 
+        'Content-Type': 'application/json',
+        ...getAuthHeaders()
+      },
       body: JSON.stringify(order),
     });
     if (!response.ok) throw new Error('Failed to create order');
@@ -158,6 +180,7 @@ export const api = {
 
     const response = await fetch(`${API_BASE_URL}/upload`, {
       method: 'POST',
+      headers: getAuthHeaders(),
       body: formData,
     });
 
@@ -174,6 +197,7 @@ export const api = {
 
     const response = await fetch(`${API_BASE_URL}/upload/multiple`, {
       method: 'POST',
+      headers: getAuthHeaders(),
       body: formData,
     });
 

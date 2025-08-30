@@ -37,8 +37,10 @@ interface Product {
 
 interface AuthStore {
   isAuthenticated: boolean;
-  login: (password: string) => boolean;
+  token: string | null;
+  login: (email: string, password: string) => Promise<boolean>;
   logout: () => void;
+  initializeAuth: () => void;
 }
 
 interface ShopStore {
@@ -120,15 +122,39 @@ export const useShopStore = create<ShopStore>((set, get) => ({
   clearCart: () => set({ cart: [] }),
 }));
 
-export const useAuthStore = create<AuthStore>((set) => ({
+export const useAuthStore = create<AuthStore>((set, get) => ({
   isAuthenticated: false,
-  login: (password: string) => {
-    // Simple password check - in production this should be more secure
-    if (password === 'admin123') {
-      set({ isAuthenticated: true });
-      return true;
+  token: null,
+  login: async (email: string, password: string) => {
+    try {
+      const response = await fetch('https://api.oeil-du-topo-consulting.com/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+      
+      if (response.ok) {
+        const data = await response.json();
+        const token = data.token || data.access_token;
+        
+        localStorage.setItem('auth_token', token);
+        set({ isAuthenticated: true, token });
+        return true;
+      }
+      return false;
+    } catch (error) {
+      console.error('Login error:', error);
+      return false;
     }
-    return false;
   },
-  logout: () => set({ isAuthenticated: false }),
+  logout: () => {
+    localStorage.removeItem('auth_token');
+    set({ isAuthenticated: false, token: null });
+  },
+  initializeAuth: () => {
+    const token = localStorage.getItem('auth_token');
+    if (token) {
+      set({ isAuthenticated: true, token });
+    }
+  },
 }));
