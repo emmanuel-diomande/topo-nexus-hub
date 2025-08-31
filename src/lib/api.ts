@@ -1,7 +1,7 @@
 // Configuration API basée sur l'environnement
 export const API_BASE_URL = import.meta.env.MODE === 'development' 
   ? 'http://localhost:3000'  // API locale en développement
-  : 'https://api.oeil-du-topo-consulting.com';  // API de production
+  : 'https://otp.babynounu.com/api';  // API de production
 
 console.log('🚀 Mode:', import.meta.env.MODE, '| API URL:', API_BASE_URL);
 
