@@ -132,7 +132,7 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
       // Configuration URL basée sur l'environnement
       const AUTH_URL = import.meta.env.MODE === 'development' 
         ? 'http://localhost:3000/auth/login'  // Auth locale en développement
-        : 'https://otp.babynounu.com/api/auth/login';  // Auth de production
+        : 'https://otp.babynounu.com/auth/login';  // Auth de production
       
       console.log('🔐 Auth Mode:', import.meta.env.MODE, '| Auth URL:', AUTH_URL);
       
