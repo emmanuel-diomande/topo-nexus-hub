@@ -75,7 +75,7 @@ const APropos = () => {
           <h1 className="text-5xl md:text-6xl font-bold text-white mb-4">
             À Propos de {siteData.companyName}
           </h1>
-          <p className="text-xl text-white/90 max-w-2xl mx-auto">
+          <p className="md:text-xl text-sm text-white/90 max-w-2xl mx-auto">
             Depuis plus de 15 ans, {siteData.companyName} accompagne ses clients dans la réalisation de leurs projets 
             les plus complexes grâce à une expertise technique reconnue et un service client d'exception.
           </p>
@@ -204,7 +204,7 @@ const APropos = () => {
             <Button 
               size="lg" 
               variant="outline" 
-              className="border-white text-white hover:bg-white hover:text-primary"
+              className="border-white bg-hero text-white hover:bg-secondary hover:text-white"
               onClick={() => navigate('/contact')}
             >
               Demander un devis

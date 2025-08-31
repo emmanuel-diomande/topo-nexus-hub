@@ -37,7 +37,7 @@ const Navigation = () => {
               alt="L'œil du topo" 
               className="w-12 h-12 rounded-full mr-3"
             />
-            <span className="text-2xl font-bold bg-gradient-primary bg-clip-text text-transparent">
+            <span className="md:text-2xl text-lg font-bold bg-gradient-primary bg-clip-text text-transparent">
               {siteData.companyName}
             </span>
           </Link>

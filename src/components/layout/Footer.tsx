@@ -93,7 +93,7 @@ const Footer = () => {
 
         <div className="border-t mt-8 pt-8 text-center">
           <p className="text-sm text-muted-foreground">
-            © 2024 {siteData.companyName}. Tous droits réservés.
+            © 2025 {siteData.companyName}. Tous droits réservés.
           </p>
         </div>
       </div>

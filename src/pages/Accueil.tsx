@@ -55,9 +55,9 @@ const Accueil = () => {
             {siteData.companyName}
           </h1>
           <p className="text-2xl md:text-3xl text-white/90 mb-8">
-            {siteData.slogan}
+            {siteData.slogan}.
           </p>
-          <p className="text-xl text-white/80 mb-12 max-w-2xl mx-auto">
+          <p className="md:text-xl text-sm text-white/80 mb-12 max-w-2xl mx-auto">
             Services professionnels de topographie, immobilier, aménagement foncier et plus encore. 
             Votre partenaire de confiance pour tous vos projets techniques.
           </p>
