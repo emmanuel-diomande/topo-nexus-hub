@@ -3,7 +3,7 @@ import { useSiteStore } from "@/stores/useStore";
 import { Menu, X } from "lucide-react";
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import logoImage from "@/assets/logo.png";
+import logoImage from "@/assets/logo.jpeg";
 import Cart from "@/components/layout/Cart";
 
 const Navigation = () => {

@@ -9,11 +9,18 @@ import { ShoppingCart, X, Plus, Minus, Trash2, MessageCircle } from "lucide-reac
 import { useState, useEffect } from "react";
 import LazyImage from "@/components/ui/lazy-image";
 import { useToast } from "@/hooks/use-toast";
+import { api, API_BASE_URL } from "@/lib/api";
+import { parse } from "path";
 
 const Cart = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isOrderModalOpen, setIsOrderModalOpen] = useState(false);
-  const [orderForm, setOrderForm] = useState({ fullName: '', phone: '', address: '' });
+  const [orderForm, setOrderForm] = useState({ 
+    customer_name: '', 
+    customer_email: '', 
+    customer_phone: '', 
+    address: '' 
+  });
   const { cart, removeFromCart, clearCart } = useShopStore();
   const { toast } = useToast();
   
@@ -37,7 +44,7 @@ const Cart = () => {
     localStorage.setItem('orderInfo', JSON.stringify(newOrderForm));
   };
   
-  const total = cart.reduce((sum, item) => sum + item.price, 0);
+  const total = cart.reduce((sum, item) => sum + parseInt(item.price.toString(), 10), 0);
 
   const handleWhatsApp = () => {
     const message = `Bonjour, je souhaite commander les articles suivants:\n\n${cart.map(item => `- ${item.name}: ${item.price.toLocaleString('fr-FR')} FCFA`).join('\n')}\n\nTotal: ${total.toLocaleString('fr-FR')} FCFA`;
@@ -45,22 +52,42 @@ const Cart = () => {
     window.open(whatsappUrl, '_blank');
   };
 
-  const handleOrderSubmit = () => {
-    if (!orderForm.fullName || !orderForm.phone || !orderForm.address) {
+  const handleOrderSubmit = async () => {
+    if (!orderForm.customer_name || !orderForm.customer_phone || !orderForm.address) {
       toast({
         title: "Erreur",
-        description: "Veuillez remplir tous les champs",
+        description: "Veuillez remplir tous les champs requis",
         variant: "destructive"
       });
       return;
     }
-    
-    toast({
-      title: "Commande envoyée",
-      description: "Nous vous contacterons bientôt"
-    });
-    setIsOrderModalOpen(false);
-    clearCart();
+
+    try {
+      await api.createOrder({
+        customer_name: orderForm.customer_name,
+        customer_email: orderForm.customer_email || '',
+        customer_phone: orderForm.customer_phone,
+        orderProducts: cart.map(item => ({
+          productId: item.id,
+          quantity: 1,
+          price: parseInt(item.price.toString(), 10)
+        })),
+        total: parseInt(total.toString(), 10)
+      });
+
+      toast({
+        title: "Commande envoyée",
+        description: "Nous vous contacterons bientôt"
+      });
+      setIsOrderModalOpen(false);
+      clearCart();
+    } catch (error) {
+      toast({
+        title: "Erreur",
+        description: "Une erreur est survenue lors de l'envoi de la commande",
+        variant: "destructive"
+      });
+    }
   };
 
   return (
@@ -122,7 +149,11 @@ const Cart = () => {
                         <div className="flex gap-6">
                           <div className="w-24 h-24 flex-shrink-0">
                             <LazyImage
-                              src={Array.isArray(item.image) ? item.image[0] : item.image}
+                              src={
+                                Array.isArray(item.medias)
+                                  ? API_BASE_URL + (item.medias[0]?.url ?? "")
+                                  : API_BASE_URL + (typeof item.medias === "string" ? item.medias : "")
+                              }
                               alt={item.name}
                               className="w-full h-full rounded-md"
                             />
@@ -204,20 +235,30 @@ const Cart = () => {
           </DialogHeader>
           <div className="space-y-4 py-4">
             <div className="space-y-2">
-              <Label htmlFor="fullName">Nom complet</Label>
+              <Label htmlFor="customer_name">Nom complet</Label>
               <Input
-                id="fullName"
-                value={orderForm.fullName}
-                onChange={(e) => updateOrderForm({ fullName: e.target.value })}
+                id="customer_name"
+                value={orderForm.customer_name}
+                onChange={(e) => updateOrderForm({ customer_name: e.target.value })}
                 placeholder="Votre nom complet"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="phone">Numéro de téléphone (WhatsApp)</Label>
+              <Label htmlFor="customer_email">Email (optionnel)</Label>
               <Input
-                id="phone"
-                value={orderForm.phone}
-                onChange={(e) => updateOrderForm({ phone: e.target.value })}
+                id="customer_email"
+                value={orderForm.customer_email}
+                onChange={(e) => updateOrderForm({ customer_email: e.target.value })}
+                placeholder="Votre email"
+                type="email"
+              />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="customer_phone">Numéro de téléphone (WhatsApp)</Label>
+              <Input
+                id="customer_phone"
+                value={orderForm.customer_phone}
+                onChange={(e) => updateOrderForm({ customer_phone: e.target.value })}
                 placeholder="Votre numéro WhatsApp"
               />
             </div>

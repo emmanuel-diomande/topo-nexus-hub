@@ -250,7 +250,7 @@ const Services = () => {
         </section>
 
         {/* Certifications */}
-        <section className="bg-gradient-card rounded-2xl p-12 mb-16">
+        <section className="bg-gradient-card hidden rounded-2xl p-12 mb-16">
           <div className="text-center mb-8">
             <h2 className="text-3xl font-bold text-foreground mb-4">Certifications & Agréments</h2>
             <p className="text-lg text-muted-foreground">
@@ -293,7 +293,7 @@ const Services = () => {
             <Button 
               size="lg" 
               variant="outline" 
-              className="border-white text-white hover:bg-white hover:text-primary"
+              className="border-white bg-hero text-white hover:bg-secondary hover:text-white"
               onClick={() => navigate('/a-propos')}
             >
               En savoir plus

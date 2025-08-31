@@ -73,7 +73,7 @@ const Accueil = () => {
             <Button 
               size="lg" 
               variant="outline" 
-              className="border-white text-white hover:bg-white hover:text-primary"
+              className="border-white bg-hero text-white hover:bg-secondary hover:text-white"
               onClick={() => navigate('/contact')}
             >
               Demander un devis
@@ -239,7 +239,7 @@ const Accueil = () => {
             <Button 
               size="lg" 
               variant="outline" 
-              className="border-white text-white hover:bg-white hover:text-primary"
+              className="border-white bg-hero text-white hover:bg-secondary hover:text-white"
               onClick={() => navigate('/boutique')}
             >
               Visiter la boutique

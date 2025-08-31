@@ -1,6 +1,6 @@
 // Configuration API basée sur l'environnement
-const API_BASE_URL = import.meta.env.MODE === 'development' 
-  ? 'http://localhost:3000/api'  // API locale en développement
+export const API_BASE_URL = import.meta.env.MODE === 'development' 
+  ? 'http://localhost:3000'  // API locale en développement
   : 'https://api.oeil-du-topo-consulting.com';  // API de production
 
 console.log('🚀 Mode:', import.meta.env.MODE, '| API URL:', API_BASE_URL);
@@ -17,12 +17,13 @@ export interface Product {
   name: string;
   price: number;
   description: string;
-  image: string[];
+  image: string | string[];
+  medias: any;
   category: string;
   inStock: boolean;
   rating?: number;
   stock?: number;
-  created_at?: string;
+  createdAt?: string;
   updated_at?: string;
 }
 
@@ -30,7 +31,7 @@ export interface Order {
   id: string;
   customer_name: string;
   customer_email: string;
-  items: {
+  orderProducts: {
     product_id: string;
     product_name: string;
     quantity: number;
@@ -38,7 +39,7 @@ export interface Order {
   }[];
   total: number;
   status: 'pending' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
-  created_at: string;
+  createdAt: string;
   updated_at?: string;
 }
 
@@ -54,13 +55,42 @@ export interface StockUpdate {
 }
 
 export interface Statistics {
-  total_products: number;
-  total_orders: number;
-  total_revenue: number;
-  low_stock_items: number;
-  recent_orders: number;
-  monthly_sales: { month: string; amount: number }[];
-  top_products: { product_id: string; product_name: string; sales: number }[];
+  lowStockItems: number;
+  monthlySales: Array<{
+    month: string;
+    amount: number;
+    orderCount: number;
+  }>;
+  totalUsers: number;
+  recentOrders: number;
+  topProducts: Array<{
+    productId: string;
+    productName: string;
+    sales: number;
+    productPrice: number;
+  }>;
+  totalOrders: number;
+  totalProducts: number;
+  totalRevenue: number;
+}
+
+export interface OrderData {
+  customer_name: string;
+  customer_email: string;
+  customer_phone: string;
+  orderProducts: Array<{
+    productId: string;
+    quantity: number;
+    price: number;
+  }>;
+  total: number;
+}
+
+export interface EmailData {
+  name: string;
+  email: string;
+  subject: string;
+  message: string;
 }
 
 // API Functions
@@ -132,6 +162,40 @@ export const api = {
     return response.json();
   },
 
+  async createCategory(category: Omit<Category, 'id'>): Promise<Category> {
+    const response = await fetch(`${API_BASE_URL}/categories`, {
+      method: 'POST',
+      headers: { 
+        'Content-Type': 'application/json',
+        ...getAuthHeaders()
+      },
+      body: JSON.stringify(category),
+    });
+    if (!response.ok) throw new Error('Failed to create category');
+    return response.json();
+  },
+
+  async updateCategory(id: string, category: Partial<Category>): Promise<Category> {
+    const response = await fetch(`${API_BASE_URL}/categories/${id}`, {
+      method: 'PUT',
+      headers: { 
+        'Content-Type': 'application/json',
+        ...getAuthHeaders()
+      },
+      body: JSON.stringify(category),
+    });
+    if (!response.ok) throw new Error('Failed to update category');
+    return response.json();
+  },
+
+  async deleteCategory(id: string): Promise<void> {
+    const response = await fetch(`${API_BASE_URL}/categories/${id}`, {
+      method: 'DELETE',
+      headers: getAuthHeaders(),
+    });
+    if (!response.ok) throw new Error('Failed to delete category');
+  },
+
   // Orders
   async getOrders(): Promise<Order[]> {
     const response = await fetch(`${API_BASE_URL}/orders`);
@@ -158,7 +222,7 @@ export const api = {
     return response.json();
   },
 
-  async createOrder(order: Omit<Order, 'id' | 'created_at' | 'updated_at'>): Promise<Order> {
+  async createOrder(order: OrderData): Promise<Order> {
     const response = await fetch(`${API_BASE_URL}/orders`, {
       method: 'POST',
       headers: { 
@@ -171,9 +235,27 @@ export const api = {
     return response.json();
   },
 
+  async submitOrder(orderData: OrderData) {
+    const response = await fetch('/api/orders', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(orderData),
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to submit order');
+    }
+
+    return response.json();
+  },
+
   // Statistics
   async getStatistics(): Promise<Statistics> {
-    const response = await fetch(`${API_BASE_URL}/statistics`);
+    const response = await fetch(`${API_BASE_URL}/statistics`, {
+      headers: getAuthHeaders(),
+    });
     if (!response.ok) throw new Error('Failed to fetch statistics');
     return response.json();
   },
@@ -194,13 +276,13 @@ export const api = {
     return data.url;
   },
 
-  async uploadMultipleImages(files: File[]): Promise<string[]> {
+  async uploadMultipleImages(files: File[], productId: string): Promise<string[]> {
     const formData = new FormData();
     files.forEach((file, index) => {
-      formData.append(`images[${index}]`, file);
+      formData.append(`images`, file);
     });
 
-    const response = await fetch(`${API_BASE_URL}/upload/multiple`, {
+    const response = await fetch(`${API_BASE_URL}/media/upload/${productId}`, {
       method: 'POST',
       headers: getAuthHeaders(),
       body: formData,
@@ -209,5 +291,32 @@ export const api = {
     if (!response.ok) throw new Error('Failed to upload images');
     const data = await response.json();
     return data.urls;
-  }
+  },
+
+  async deleteMedia(mediaId: string): Promise<void> {
+    const response = await fetch(`${API_BASE_URL}/media/${mediaId}`, {
+      method: 'DELETE',
+      headers: getAuthHeaders(),
+    });
+    if (!response.ok) throw new Error('Failed to delete media');
+  },
+
+  // Emails
+  async sendEmail(emailData: EmailData): Promise<boolean> {
+    try {
+      const response = await fetch(`${API_BASE_URL}/contact`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(emailData),
+      });
+
+      if (!response.ok) throw new Error('Failed to send email');
+      return true;
+    } catch (error) {
+      console.error('Error sending email:', error);
+      return false;
+    }
+  },
 };

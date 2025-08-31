@@ -3,36 +3,80 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ArrowLeft, TrendingUp, Users, ShoppingCart, Package, Euro, Calendar, BarChart3 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { api } from "@/lib/api";
+import { useEffect, useState } from "react";
+import { useToast } from "@/hooks/use-toast";
 
 const Statistics = () => {
   const navigate = useNavigate();
+  const { toast } = useToast();
+  const [isLoading, setIsLoading] = useState(true);
+  const [stats, setStats] = useState({
+    totalSales: 0,
+    totalOrders: 0,
+    totalCustomers: 0,
+    totalProducts: 0,
+    monthlyGrowth: 0,
+    avgOrderValue: 0,
+    topCategory: "",
+    conversionRate: 0
+  });
+  const [monthlyData, setMonthlyData] = useState([]);
+  const [topProducts, setTopProducts] = useState([]);
 
-  const stats = {
-    totalSales: 125000,
-    totalOrders: 235,
-    totalCustomers: 156,
-    totalProducts: 45,
-    monthlyGrowth: 12.5,
-    avgOrderValue: 532,
-    topCategory: "Instruments",
-    conversionRate: 3.2
+  useEffect(() => {
+    fetchStatistics();
+  }, []);
+
+  const fetchStatistics = async () => {
+    try {
+      const data = await api.getStatistics();
+      setStats({
+        totalSales: data.totalRevenue,
+        totalOrders: data.totalOrders,
+        totalCustomers: data.totalUsers, // Using recentOrders as customers for now
+        totalProducts: data.totalProducts,
+        monthlyGrowth: 0, // Not provided by API
+        avgOrderValue: data.totalRevenue / data.totalOrders || 0,
+        topCategory: "Instruments", // Not provided by API
+        conversionRate: 0 // Not provided by API
+      });
+
+      // Transform monthly data
+      setMonthlyData(data.monthlySales.map(item => ({
+        month: new Date(item.month).toLocaleString('fr-FR', { month: 'short' }),
+        sales: item.amount,
+        orders: item.orderCount // Not provided by API
+      })));
+
+      // Transform top products
+      setTopProducts(data.topProducts.map(item => ({
+        name: item.productName,
+        sales: item.sales,
+        revenue: 0 ,// Not provided by API
+        productPrice: item.productPrice
+      })));
+    } catch (error) {
+      toast({
+        title: "Erreur",
+        description: "Impossible de charger les statistiques",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const monthlyData = [
-    { month: "Jan", sales: 15000, orders: 28 },
-    { month: "Fév", sales: 18500, orders: 32 },
-    { month: "Mar", sales: 22000, orders: 45 },
-    { month: "Avr", sales: 19800, orders: 38 },
-    { month: "Mai", sales: 25600, orders: 52 },
-    { month: "Juin", sales: 23800, orders: 40 }
-  ];
-
-  const topProducts = [
-    { name: "Théodolite DT-209", sales: 15, revenue: 43485 },
-    { name: "GPS RTK Leica", sales: 8, revenue: 100000 },
-    { name: "Scanner 3D RTC360", sales: 3, revenue: 135000 },
-    { name: "Drone DJI RTK", sales: 12, revenue: 102000 }
-  ];
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin w-8 h-8 border-4 border-primary border-t-transparent rounded-full mx-auto mb-4" />
+          <p className="text-muted-foreground">Chargement des statistiques...</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-muted/20">
@@ -174,7 +218,7 @@ const Statistics = () => {
                       </div>
                     </div>
                     <div className="text-right">
-                      <p className="text-lg font-bold text-primary">{product.revenue.toLocaleString()}€</p>
+                      <p className="text-lg font-bold text-primary">{product.productPrice.toLocaleString()}€</p>
                     </div>
                   </div>
                 ))}

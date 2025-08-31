@@ -1,5 +1,7 @@
 import { useSiteStore } from "@/stores/useStore";
 import { MapPin, Phone, Mail, Clock } from "lucide-react";
+import logoImage from "@/assets/logo.jpeg";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   const { siteData } = useSiteStore();
@@ -11,8 +13,18 @@ const Footer = () => {
           {/* Company Info */}
           <div className="space-y-4">
             <div className="flex items-center">
-              <div className="w-8 h-8 bg-gradient-primary rounded-lg mr-3 flex items-center justify-center">
-                <span className="text-primary-foreground font-bold text-sm">TN</span>
+              <div className="flex justify-between items-center h-20">
+          {/* Logo */}
+          <Link
+            to="/accueil"
+            className="flex items-center"
+          >
+            <img 
+              src={logoImage} 
+              alt="L'œil du topo" 
+              className="w-12 h-12 rounded-full mr-3"
+            />
+          </Link>
               </div>
               <span className="text-xl font-bold bg-gradient-primary bg-clip-text text-transparent">
                 {siteData.companyName}
@@ -43,7 +55,7 @@ const Footer = () => {
             <h3 className="font-semibold text-foreground">Contact</h3>
             <div className="space-y-3">
               <div className="flex items-start space-x-3">
-                <MapPin className="w-4 h-4 text-primary mt-0.5" />
+                <MapPin className="w-8 h-8 text-primary mt-0.5" />
                 <span className="text-sm text-muted-foreground">
                   {siteData.contact.address}
                 </span>

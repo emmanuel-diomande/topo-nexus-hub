@@ -21,12 +21,14 @@ interface SiteStore {
   setSiteData: (data: SiteData) => void;
 }
 
+
 interface Product {
   id: string;
   name: string;
   price: number;
   description: string;
   image: string | string[];
+  medias: string | any[];
   category: string;
   inStock: boolean;
   rating?: number;
@@ -62,12 +64,12 @@ export const useNavigationStore = create<NavigationStore>((set) => ({
 
 export const useSiteStore = create<SiteStore>((set) => ({
   siteData: {
-    companyName: "L'œil du topo",
+    companyName: "L'Oeil Du Topo Consulting",
     slogan: 'La précision au service de vos projets',
     contact: {
-      phone: '+33 1 23 45 67 89',
-      email: 'contact@toponexus.fr',
-      address: '123 Avenue des Géomètres, 75001 Paris, France'
+      phone: '+225 01 000 909 85 / 07 872 212 54',
+      email: 'contact@oeil-du-topo-consulting.com',
+      address: 'Abidjan (Cocody 9eme Tranche), Côte d’Ivoire Non loin de l\'immeuble CGK'
     },
     services: [
       'Topographie',
@@ -129,7 +131,7 @@ export const useAuthStore = create<AuthStore>((set, get) => ({
     try {
       // Configuration URL basée sur l'environnement
       const AUTH_URL = import.meta.env.MODE === 'development' 
-        ? 'http://localhost:3000/api/auth/login'  // Auth locale en développement
+        ? 'http://localhost:3000/auth/login'  // Auth locale en développement
         : 'https://api.oeil-du-topo-consulting.com/auth/login';  // Auth de production
       
       console.log('🔐 Auth Mode:', import.meta.env.MODE, '| Auth URL:', AUTH_URL);

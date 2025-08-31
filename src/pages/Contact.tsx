@@ -9,6 +9,7 @@ import { MapPin, Phone, Mail, Clock, Send, MessageSquare } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/hooks/use-toast";
 import bannerContact from "@/assets/banner-contact.jpg";
+import { api } from "@/lib/api";
 
 const Contact = () => {
   const { siteData } = useSiteStore();
@@ -21,22 +22,84 @@ const Contact = () => {
     subject: '',
     message: ''
   });
+  const [errors, setErrors] = useState<{[key: string]: string}>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const validateForm = () => {
+    const newErrors: {[key: string]: string} = {};
+    
+    if (!formData.name.trim()) {
+      newErrors.name = "Le nom est requis";
+    }
+    
+    if (!formData.email.trim()) {
+      newErrors.email = "L'email est requis";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      newErrors.email = "L'email n'est pas valide";
+    }
+    
+    if (!formData.subject.trim()) {
+      newErrors.subject = "Le sujet est requis";
+    }
+    
+    if (!formData.message.trim()) {
+      newErrors.message = "Le message est requis";
+    }
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const sendEmail = async () => {
+    return api.sendEmail({
+      email: 'contact@oeil-du-topo-consulting.com',
+      name: formData.name,
+      subject: formData.subject,
+      message: `
+        Nom: ${formData.name}
+        Email: ${formData.email}
+        Téléphone: ${formData.phone}
+        Service: ${formData.service}
+        Message: ${formData.message}
+      `
+    });
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Ici on intégrerait l'API
-    toast({
-      title: "Message envoyé !",
-      description: "Nous vous répondrons dans les plus brefs délais.",
-    });
-    setFormData({
-      name: '',
-      email: '',
-      phone: '',
-      service: '',
-      subject: '',
-      message: ''
-    });
+    if (!validateForm()) {
+      toast({
+        title: "Erreur de validation",
+        description: "Veuillez corriger les erreurs dans le formulaire",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    setIsSubmitting(true);
+    const success = await sendEmail();
+    setIsSubmitting(false);
+
+    if (success) {
+      toast({
+        title: "Message envoyé !",
+        description: "Nous vous répondrons dans les plus brefs délais.",
+      });
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        service: '',
+        subject: '',
+        message: ''
+      });
+    } else {
+      toast({
+        title: "Erreur",
+        description: "Une erreur est survenue lors de l'envoi du message",
+        variant: "destructive"
+      });
+    }
   };
 
   const contactInfo = [
@@ -109,10 +172,17 @@ const Contact = () => {
                         id="name"
                         type="text"
                         value={formData.name}
-                        onChange={(e) => setFormData({...formData, name: e.target.value})}
+                        onChange={(e) => {
+                          setFormData({...formData, name: e.target.value});
+                          if (errors.name) {
+                            setErrors({...errors, name: ''});
+                          }
+                        }}
                         placeholder="Votre nom complet"
                         required
+                        className={errors.name ? "border-red-500" : ""}
                       />
+                      {errors.name && <p className="text-sm text-red-500 mt-1">{errors.name}</p>}
                     </div>
                     <div className="space-y-2">
                       <Label htmlFor="email">Email *</Label>
@@ -120,10 +190,17 @@ const Contact = () => {
                         id="email"
                         type="email"
                         value={formData.email}
-                        onChange={(e) => setFormData({...formData, email: e.target.value})}
+                        onChange={(e) => {
+                          setFormData({...formData, email: e.target.value});
+                          if (errors.email) {
+                            setErrors({...errors, email: ''});
+                          }
+                        }}
                         placeholder="votre@email.fr"
                         required
+                        className={errors.email ? "border-red-500" : ""}
                       />
+                      {errors.email && <p className="text-sm text-red-500 mt-1">{errors.email}</p>}
                     </div>
                   </div>
 
@@ -161,10 +238,17 @@ const Contact = () => {
                       id="subject"
                       type="text"
                       value={formData.subject}
-                      onChange={(e) => setFormData({...formData, subject: e.target.value})}
+                      onChange={(e) => {
+                        setFormData({...formData, subject: e.target.value});
+                        if (errors.subject) {
+                          setErrors({...errors, subject: ''});
+                        }
+                      }}
                       placeholder="Objet de votre demande"
                       required
+                      className={errors.subject ? "border-red-500" : ""}
                     />
+                    {errors.subject && <p className="text-sm text-red-500 mt-1">{errors.subject}</p>}
                   </div>
 
                   <div className="space-y-2">
@@ -172,11 +256,18 @@ const Contact = () => {
                     <Textarea
                       id="message"
                       value={formData.message}
-                      onChange={(e) => setFormData({...formData, message: e.target.value})}
+                      onChange={(e) => {
+                        setFormData({...formData, message: e.target.value});
+                        if (errors.message) {
+                          setErrors({...errors, message: ''});
+                        }
+                      }}
                       placeholder="Décrivez votre projet ou votre demande..."
                       rows={6}
                       required
+                      className={errors.message ? "border-red-500" : ""}
                     />
+                    {errors.message && <p className="text-sm text-red-500 mt-1">{errors.message}</p>}
                   </div>
 
                   <div className="bg-muted p-4 rounded-lg">
@@ -186,9 +277,18 @@ const Contact = () => {
                     </p>
                   </div>
 
-                  <Button type="submit" size="lg" className="w-full">
-                    <Send className="w-4 h-4 mr-2" />
-                    Envoyer la demande
+                  <Button type="submit" size="lg" className="w-full" disabled={isSubmitting}>
+                    {isSubmitting ? (
+                      <>
+                        <div className="animate-spin mr-2 h-4 w-4 border-2 border-white border-t-transparent rounded-full" />
+                        Envoi en cours...
+                      </>
+                    ) : (
+                      <>
+                        <Send className="w-4 h-4 mr-2" />
+                        Envoyer la demande
+                      </>
+                    )}
                   </Button>
                 </form>
               </CardContent>

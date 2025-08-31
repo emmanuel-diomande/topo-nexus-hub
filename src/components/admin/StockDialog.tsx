@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -6,6 +6,8 @@ import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { useShopStore } from "@/stores/useStore";
 import { useToast } from "@/hooks/use-toast";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { api } from "@/lib/api";
 import { Package, Plus, Minus } from "lucide-react";
 
 interface Product {
@@ -32,24 +34,53 @@ export const StockDialog = ({ product, open, onOpenChange }: StockDialogProps) =
   
   const [stockValue, setStockValue] = useState(product?.stock || 0);
   const [adjustment, setAdjustment] = useState(0);
+  const queryClient = useQueryClient();
+
+  useEffect(() => {
+    if (product) {
+      setStockValue(product.stock || 0);
+      setAdjustment(0);
+    }
+  }, [product]);
+
+  const updateStockMutation = useMutation({
+    mutationFn: async (newStock: number) => {
+      if (!product) throw new Error('No product selected');
+      
+      return api.updateProduct(product.id, {
+        stock: Math.max(0, newStock),
+        inStock: newStock > 0
+      });
+    },
+    onSuccess: (data) => {
+      const newStock = data.stock || 0;
+      updateProduct(product!.id, data);
+      queryClient.invalidateQueries({ queryKey: ['products'] });
+      
+      toast({
+        title: "✅ Stock mis à jour",
+        description: `Stock de ${product!.name} : ${newStock} unités`,
+      });
+      
+      setStockValue(newStock);
+      setAdjustment(0);
+      onOpenChange(false);
+    },
+    onError: (error) => {
+      console.error('Failed to update stock:', error);
+      toast({
+        title: "❌ Erreur",
+        description: "Impossible de mettre à jour le stock",
+        variant: "destructive",
+      });
+    }
+  });
 
   const handleStockUpdate = () => {
     if (!product) return;
     
     const newStock = stockValue + adjustment;
-    
-    updateProduct(product.id, {
-      stock: Math.max(0, newStock),
-      inStock: newStock > 0
-    });
-    
-    toast({
-      title: "✅ Stock mis à jour",
-      description: `Stock de ${product.name} : ${Math.max(0, newStock)} unités`,
-    });
-    
-    onOpenChange(false);
-    setAdjustment(0);
+    updateStockMutation.mutate(newStock);
   };
 
   if (!product) return null;
@@ -111,8 +142,12 @@ export const StockDialog = ({ product, open, onOpenChange }: StockDialogProps) =
           )}
           
           <div className="flex space-x-2">
-            <Button onClick={handleStockUpdate} className="flex-1" disabled={adjustment === 0}>
-              Mettre à jour
+            <Button 
+              onClick={handleStockUpdate} 
+              className="flex-1" 
+              disabled={adjustment === 0 || updateStockMutation.isPending}
+            >
+              {updateStockMutation.isPending ? "Mise à jour..." : "Mettre à jour"}
             </Button>
             <Button variant="outline" onClick={() => onOpenChange(false)}>
               Annuler
