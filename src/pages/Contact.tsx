@@ -52,7 +52,7 @@ const Contact = () => {
 
   const sendEmail = async () => {
     return api.sendEmail({
-      email: 'contact@oeil-du-topo-consulting.com',
+      email: formData.email,
       name: formData.name,
       subject: formData.subject,
       message: `
